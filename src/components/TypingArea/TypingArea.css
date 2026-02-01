@@ -1,0 +1,126 @@
+/* TypingArea Component Styles */
+
+.typing-area {
+    position: relative;
+    min-height: 180px;
+    padding: var(--space-6);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    cursor: text;
+    transition: border-color var(--transition-fast);
+}
+
+.typing-area:focus-within {
+    border-color: var(--color-accent);
+}
+
+.typing-area--finished {
+    cursor: default;
+}
+
+/* Hidden input for key capture */
+.typing-input-hidden {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+/* Words container */
+.typing-words {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    line-height: 2;
+    color: var(--color-text-muted);
+    user-select: none;
+}
+
+/* Individual word */
+.typing-word {
+    position: relative;
+    margin-right: var(--space-3);
+    display: inline-block;
+}
+
+.typing-word--active {
+    color: var(--color-text-secondary);
+}
+
+.typing-word--correct {
+    color: var(--color-text-muted);
+}
+
+.typing-word--incorrect {
+    text-decoration: underline;
+    text-decoration-color: var(--color-error);
+    text-underline-offset: 4px;
+}
+
+/* Individual character */
+.typing-char {
+    position: relative;
+}
+
+.typing-char--correct {
+    color: var(--color-text-primary);
+}
+
+.typing-char--incorrect {
+    color: var(--color-error);
+}
+
+.typing-char--missed {
+    opacity: 0.5;
+}
+
+/* Extra typed characters */
+.typing-extra {
+    color: var(--color-error);
+    opacity: 0.7;
+}
+
+/* Caret */
+.typing-caret {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 1.2em;
+    background-color: var(--color-accent);
+    animation: caret-blink 1s ease-in-out infinite;
+}
+
+.typing-caret--end {
+    position: relative;
+    display: inline-block;
+    margin-left: 1px;
+}
+
+@keyframes caret-blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Click hint */
+.typing-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    background-color: rgba(13, 13, 15, 0.85);
+    border-radius: var(--radius-lg);
+    pointer-events: none;
+}

@@ -1,0 +1,91 @@
+/* History Components Styles */
+
+.history-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.history-stat-card {
+    background-color: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+}
+
+.history-stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-2);
+}
+
+.history-stat-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.history-stat-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+    margin-bottom: var(--space-1);
+}
+
+.history-stat-unit {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+.history-stat-sub {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    display: flex;
+    gap: var(--space-2);
+}
+
+.history-stat-sep {
+    color: var(--color-border);
+}
+
+/* PB List */
+.history-pb-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.history-pb-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-sm);
+}
+
+.history-pb-dur {
+    color: var(--color-text-muted);
+}
+
+.history-pb-val {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* Sparkline */
+.sparkline {
+    opacity: 0.8;
+}
+
+.emoji-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+}

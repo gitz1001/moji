@@ -1,0 +1,62 @@
+/* WpmChart Component Styles */
+
+.wpm-chart {
+    margin-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.wpm-chart--empty {
+    padding: var(--space-6);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.wpm-chart-svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.wpm-chart-grid {
+    stroke: var(--color-border);
+    stroke-width: 1;
+    stroke-dasharray: 4, 4;
+}
+
+.wpm-chart-label {
+    fill: var(--color-text-muted);
+    font-size: 10px;
+    font-family: var(--font-mono);
+}
+
+.wpm-chart-line {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.wpm-chart-point {
+    fill: var(--color-bg-primary);
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    transition: r var(--transition-fast);
+}
+
+.wpm-chart-point:hover {
+    r: 5;
+}
+
+.wpm-chart-legend {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.wpm-chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}

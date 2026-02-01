@@ -1,0 +1,21 @@
+/* Layout Component Styles */
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-content {
+    flex: 1;
+    max-width: var(--content-max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-6);
+}
+
+@media (max-width: 480px) {
+    .layout-content {
+        padding: var(--space-6) var(--space-4);
+    }
+}

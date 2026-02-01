@@ -1,0 +1,48 @@
+/* ConsistencyBadge Styles */
+
+.consistency-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-elevated);
+    min-width: 100px;
+}
+
+.consistency-badge-score {
+    font-family: var(--font-mono);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.consistency-badge-label {
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* Variants */
+.consistency-badge--smooth {
+    color: var(--color-success);
+    background-color: rgba(34, 197, 94, 0.1);
+}
+
+.consistency-badge--steady {
+    color: var(--color-accent);
+    background-color: var(--color-accent-muted);
+}
+
+.consistency-badge--spiky {
+    color: var(--color-warning);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.consistency-badge--chaotic {
+    color: var(--color-error);
+    background-color: rgba(239, 68, 68, 0.1);
+}
