@@ -1,43 +1,52 @@
-/* Moji Design System — CSS Custom Properties */
-
 :root {
-  /* === Colors: Dark Theme === */
-  --color-bg-primary: #0d0d0f;
-  --color-bg-secondary: #151518;
-  --color-bg-elevated: #1c1c21;
-  --color-bg-hover: #252529;
-  
-  --color-text-primary: #f0f0f2;
-  --color-text-secondary: #a0a0a8;
-  --color-text-muted: #606068;
-  
-  --color-accent: #6366f1;
-  --color-accent-hover: #818cf8;
-  --color-accent-muted: rgba(99, 102, 241, 0.15);
-  
-  --color-success: #22c55e;
+  /* === Colors: Midnight Options === */
+  --bg: #070A12;
+  --surface: #0C1220;
+  --surface2: #101A2E;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+
+  --accent: #4DB4FF;
+  /* keep only 1 accent */
+  --accent2: #8B5CF6;
+  /* optional secondary */
+
+  --color-success: #10b981;
   --color-error: #ef4444;
   --color-warning: #f59e0b;
-  
-  --color-border: #2a2a30;
-  --color-border-focus: #6366f1;
 
-  /* === Spacing (4px base) === */
-  --space-1: 4px;
+  /* === Spacing & Radius === */
+  --r: 14px;
+  --shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+  --pad: 24px;
+
+  /* === Mappings to Legacy System (for compatibility) === */
+  --color-bg-primary: var(--bg);
+  --color-bg-secondary: var(--surface);
+  --color-bg-elevated: var(--surface2);
+  --color-border: var(--border);
+  --color-text-primary: var(--text);
+  --color-text-secondary: var(--muted);
+  --color-text-muted: rgba(255, 255, 255, 0.45);
+  --color-accent: var(--accent);
+  --color-accent-hover: #7Cc4FF;
+
+  --radius-lg: var(--r);
+  --radius-md: 8px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
-  --space-10: 40px;
   --space-12: 48px;
-  --space-16: 64px;
 
   /* === Typography === */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  
+  --topbar-height: 64px;
+
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -45,23 +54,24 @@
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 2rem;
-  
-  --leading-tight: 1.25;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.75;
 
-  /* === Border Radius === */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-full: 9999px;
+  --transition-normal: 200ms ease;
+  --transition-fast: 100ms ease;
 
-  /* === Transitions === */
-  --transition-fast: 150ms ease;
-  --transition-normal: 250ms ease;
-  --transition-slow: 350ms ease;
+  --content-max-width: 1100px;
+}
 
-  /* === Sizing === */
-  --topbar-height: 56px;
-  --content-max-width: 1200px;
+[data-theme="light"] {
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --surface2: #F3F4F6;
+  --border: rgba(0, 0, 0, 0.08);
+
+  --text: #111827;
+  --muted: #4B5563;
+
+  --accent: #2563EB;
+  --accent2: #7C3AED;
+
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

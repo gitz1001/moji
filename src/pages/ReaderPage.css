@@ -1,0 +1,180 @@
+/* ReaderPage Styles */
+
+.page--reader {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    /* Fill remaining */
+}
+
+.reader-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.reader-back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    padding: var(--space-2);
+}
+
+.reader-back-btn:hover {
+    color: var(--text);
+}
+
+.reader-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.reader-book-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+}
+
+.reader-location {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: 4px;
+}
+
+.reader-chapter-select {
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    max-width: 300px;
+}
+
+.reader-chapter-select:hover {
+    color: var(--text);
+}
+
+.reader-progress {
+    font-size: var(--text-xs);
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Content */
+.reader-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* Vertically center the paragraph */
+    justify-content: center;
+}
+
+.reader-card {
+    width: 100%;
+}
+
+/* Reuse TypingArea but maybe simpler? */
+/* The default TypingArea styles work well here too. */
+
+/* Footer */
+.reader-footer {
+    margin-top: var(--space-8);
+    height: 100px;
+    /* Fixed height to prevent jumps */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.reader-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    background: var(--surface2);
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    animation: slideUp 0.3s ease;
+}
+
+.reader-stat-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-val {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.stat-lbl {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.reader-next-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: var(--space-4);
+    font-family: var(--font-sans);
+}
+
+.reader-next-btn:hover {
+    background: var(--color-accent-hover);
+}
+
+.reader-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.reader-controls:hover {
+    opacity: 1;
+}
+
+.reader-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.reader-nav-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.reader-nav-btn:not(:disabled):hover {
+    border-color: var(--text);
+    color: var(--text);
+}
+
+.reader-hint {
+    font-size: var(--text-sm);
+    color: var(--muted);
+}

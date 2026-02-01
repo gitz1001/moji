@@ -1,0 +1,61 @@
+/* Practice Page Styles */
+.practice-header {
+    margin-bottom: var(--space-8);
+}
+
+.practice-tabs {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    border-bottom: 1px solid var(--border);
+}
+
+.practice-tab {
+    background: none;
+    border: none;
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--muted);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.practice-tab:hover {
+    color: var(--text);
+}
+
+.practice-tab.active {
+    color: var(--accent);
+}
+
+.practice-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--accent);
+}
+
+.games-placeholder {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-12);
+    text-align: center;
+    background: var(--surface);
+    border-radius: var(--r);
+    border: 1px dashed var(--border);
+}
+
+.empty-state h3 {
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+    color: var(--text);
+}
+
+.empty-state p {
+    COLOR: var(--muted);
+}

@@ -117,3 +117,29 @@
 .train-retry-btn:hover {
     border-color: var(--color-accent);
 }
+
+/* Train Spinner */
+.train-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--color-text-muted);
+}
+
+.train-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-bg-elevated);
+    border-top-color: var(--color-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--space-4);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

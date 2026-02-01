@@ -1,0 +1,82 @@
+.coach-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.coach-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.coach-icon {
+    font-size: 1.25rem;
+}
+
+.coach-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+
+.coach-desc {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.coach-btn-mini {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: var(--text-xs);
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.coach-btn-mini:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* Skill Widget Compact */
+.skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: var(--space-4);
+}
+
+.skill-header-mini {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+}
+
+.skill-title-mini {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text);
+}
+
+.skill-bar-mini {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.skill-fill-mini {
+    height: 100%;
+    background: var(--accent2);
+}

@@ -1,25 +1,71 @@
-/* TypingArea Component Styles */
+/** TypingArea Component — Renders words with caret and captures input */
+/* Ghost Caret Styles inserted via tool */
+.typing-caret--ghost {
+    background-color: transparent !important;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 5px var(--accent);
+    opacity: 0.7;
+    z-index: 5;
+}
 
 .typing-area {
     position: relative;
-    min-height: 180px;
-    padding: var(--space-6);
-    background-color: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    min-height: 240px;
+    /* Hero height */
+    padding: var(--space-8);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    /* Slightly rounder */
     cursor: text;
-    transition: border-color var(--transition-fast);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* Deep Shadows for "Box" feel */
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    /* Inner highlight */
+
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .typing-area:focus-within {
-    border-color: var(--color-accent);
+    border-color: var(--accent);
+    /* Strong Glow */
+    box-shadow:
+        0 0 0 2px rgba(77, 180, 255, 0.2),
+        0 10px 25px -5px rgba(77, 180, 255, 0.15),
+        inset 0 0 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    /* Subtle lift */
 }
 
 .typing-area--finished {
     cursor: default;
+    opacity: 0.8;
 }
 
-/* Hidden input for key capture */
+/* Ghost Prompt Logic */
+.typing-area:focus-within .typing-hint {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.typing-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-lg);
+    color: var(--muted);
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
 .typing-input-hidden {
     position: absolute;
     opacity: 0;
@@ -28,28 +74,34 @@
     pointer-events: none;
 }
 
-/* Words container */
 .typing-words {
     font-family: var(--font-mono);
-    font-size: var(--text-xl);
-    line-height: 2;
-    color: var(--color-text-muted);
+    font-size: 1.5rem;
+    line-height: 1.8;
+    color: var(--muted);
     user-select: none;
+    width: 100%;
+    /* Ensure wrapping */
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    /* Prevent horizontal scroll */
 }
 
-/* Individual word */
 .typing-word {
-    position: relative;
     margin-right: var(--space-3);
-    display: inline-block;
+    border-radius: 4px;
+    padding: 0 2px;
 }
 
 .typing-word--active {
-    color: var(--color-text-secondary);
+    color: var(--text);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .typing-word--correct {
-    color: var(--color-text-muted);
+    color: var(--muted);
+    opacity: 0.5;
 }
 
 .typing-word--incorrect {
@@ -58,13 +110,12 @@
     text-underline-offset: 4px;
 }
 
-/* Individual character */
 .typing-char {
     position: relative;
 }
 
 .typing-char--correct {
-    color: var(--color-text-primary);
+    color: var(--text);
 }
 
 .typing-char--incorrect {
@@ -75,21 +126,14 @@
     opacity: 0.5;
 }
 
-/* Extra typed characters */
-.typing-extra {
-    color: var(--color-error);
-    opacity: 0.7;
-}
-
-/* Caret */
 .typing-caret {
     position: absolute;
-    left: 0;
-    top: 0;
     width: 2px;
     height: 1.2em;
-    background-color: var(--color-accent);
+    background-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
     animation: caret-blink 1s ease-in-out infinite;
+    z-index: 10;
 }
 
 .typing-caret--end {
@@ -109,18 +153,4 @@
     100% {
         opacity: 0;
     }
-}
-
-/* Click hint */
-.typing-hint {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    background-color: rgba(13, 13, 15, 0.85);
-    border-radius: var(--radius-lg);
-    pointer-events: none;
 }

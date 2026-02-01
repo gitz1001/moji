@@ -12,7 +12,7 @@ export function generateWeaknessWords(history: RunRecord[], count: number = 50):
     const errorCounts: Record<string, number> = {};
 
     // Scan last 20 runs
-    const recentRuns = history.slice(0, 20);
+    const recentRuns = history.slice(-20);
 
     recentRuns.forEach(run => {
         if (!run.metrics.errorEvents) return;
@@ -63,7 +63,7 @@ export function generateWeaknessWords(history: RunRecord[], count: number = 50):
 export function calculateTargetPace(history: RunRecord[]): number {
     if (history.length === 0) return 40; // Default
 
-    const recent = history.slice(0, 10);
+    const recent = history.slice(-10);
     const sumWpm = recent.reduce((sum, r) => sum + r.metrics.correctedWpm, 0);
     const avg = sumWpm / recent.length;
 

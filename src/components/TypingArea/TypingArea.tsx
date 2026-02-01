@@ -7,9 +7,10 @@ import './TypingArea.css';
 interface TypingAreaProps {
     snapshot: EngineSnapshot;
     onKeyDown: (e: React.KeyboardEvent) => void;
+    ghostIndex?: { wordIndex: number; charIndex: number };
 }
 
-export function TypingArea({ snapshot, onKeyDown }: TypingAreaProps) {
+export function TypingArea({ snapshot, onKeyDown, ghostIndex }: TypingAreaProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const hiddenInputRef = useRef<HTMLInputElement>(null);
     const activeWordRef = useRef<HTMLSpanElement>(null);
@@ -46,6 +47,16 @@ export function TypingArea({ snapshot, onKeyDown }: TypingAreaProps) {
         const isCompleted = wordState.isComplete;
         const typed = isActive ? currentInput : wordState.typed;
 
+        // Calculate global character index start for this word
+        // This is expensive to do in render, ideally passed down or memoized, 
+        // but for MVP we track the cumulative length.
+        // Actually, to keep it simple, let's assume ghostIndex is a Word Index for now? 
+        // No, smooth ghost needs char precision.
+        // Let's rely on the parent or pre-calc. 
+        // For now, let's just use ghostWordIndex.
+
+        // Wait, props: ghostWordIndex, ghostCharIndex
+
         return (
             <span
                 key={index}
@@ -57,6 +68,11 @@ export function TypingArea({ snapshot, onKeyDown }: TypingAreaProps) {
                     const typedChar = typed[charIndex];
                     const isCurrentChar = isActive && charIndex === typed.length;
 
+                    // Ghost Logic
+                    const isGhostHere = ghostIndex !== undefined &&
+                        index === ghostIndex.wordIndex &&
+                        charIndex === ghostIndex.charIndex;
+
                     let charClass = 'typing-char';
                     if (typedChar !== undefined) {
                         charClass += typedChar === char ? ' typing-char--correct' : ' typing-char--incorrect';
@@ -67,6 +83,7 @@ export function TypingArea({ snapshot, onKeyDown }: TypingAreaProps) {
                     return (
                         <span key={charIndex} className={charClass}>
                             {isCurrentChar && <span className="typing-caret" />}
+                            {isGhostHere && <span className="typing-caret typing-caret--ghost" />}
                             {char}
                         </span>
                     );
@@ -80,6 +97,10 @@ export function TypingArea({ snapshot, onKeyDown }: TypingAreaProps) {
                 {/* Caret at end of word if needed */}
                 {isActive && typed.length >= wordState.word.length && (
                     <span className="typing-caret typing-caret--end" />
+                )}
+                {/* Ghost at end of word? */}
+                {ghostIndex !== undefined && index === ghostIndex.wordIndex && ghostIndex.charIndex >= wordState.word.length && (
+                    <span className="typing-caret typing-caret--ghost typing-caret--end" />
                 )}
             </span>
         );

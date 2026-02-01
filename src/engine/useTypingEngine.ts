@@ -154,12 +154,17 @@ export function useTypingEngine({
             if (!startTimeRef.current) return;
             const now = Date.now();
             const elapsed = now - startTimeRef.current - pausedDurationRef.current;
-            const remaining = Math.max(0, durationMs - elapsed);
 
-            setTimeRemainingMs(remaining);
+            if (durationMs > 0) {
+                const remaining = Math.max(0, durationMs - elapsed);
+                setTimeRemainingMs(remaining);
 
-            if (remaining <= 0) {
-                finishTest();
+                if (remaining <= 0) {
+                    finishTest();
+                }
+            } else {
+                // Infinite mode: just running
+                setTimeRemainingMs(0);
             }
         }, 100);
 

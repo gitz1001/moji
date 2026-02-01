@@ -6,7 +6,10 @@ import { useTypingEngine, generateWords, generateWeaknessWords, calculateTargetP
 import { TypingArea } from '../components/TypingArea';
 import { getAllRuns } from '../storage';
 import { ConsistencyBadge } from '../components/Results';
+import { Toast } from '../components/Toast';
 import { saveRun } from '../storage';
+import { getCurrentSession, saveSession, type DailySession } from '../engine/session';
+import { evaluateRunForSkill, getCurrentSkill } from '../engine/skills';
 import './TrainPage.css';
 
 const DRILL_DURATION = 30_000; // 30s for drills
@@ -18,35 +21,103 @@ export function TrainPage() {
     const [words, setWords] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [targetPace, setTargetPace] = useState<number | null>(null);
+    const [toast, setToast] = useState<{ msg: string, type: 'success' | 'info' } | null>(null);
 
     // Load resources based on mode
     useEffect(() => {
-        async function load() {
-            setLoading(true);
-            const history = await getAllRuns();
+        let mounted = true;
 
-            if (mode === 'weakness') {
-                const weakWords = generateWeaknessWords(history, 80);
-                setWords(weakWords);
-            } else if (mode === 'pace') {
-                const pace = calculateTargetPace(history);
-                setTargetPace(pace);
-                setWords(generateWords(80));
-            } else {
-                // Accuracy or Standard
-                setWords(generateWords(80));
+        async function load() {
+            // For standard/accuracy, we don't need history, so we can render instantly
+            // but we might want new words.
+            if (mode === 'standard' || mode === 'accuracy') {
+                if (mounted) {
+                    setWords(generateWords(80));
+                    setLoading(false);
+                }
+                return;
             }
-            setLoading(false);
+
+            // For pace/weakness, we need history
+            if (mounted) setLoading(true);
+
+            try {
+                // Potential optimization: fetch only needed count?
+                // For now, fetch all is okay if UI is non-blocking.
+                const history = await getAllRuns();
+
+                if (!mounted) return;
+
+                if (mode === 'weakness') {
+                    const weakWords = generateWeaknessWords(history, 80);
+                    setWords(weakWords);
+                } else if (mode === 'pace') {
+                    const pace = calculateTargetPace(history);
+                    setTargetPace(pace);
+                    setWords(generateWords(80));
+                }
+            } catch (e) {
+                console.error("Failed to load drill data", e);
+                // Fallback
+                setWords(generateWords(80));
+            } finally {
+                if (mounted) setLoading(false);
+            }
         }
         load();
+
+        return () => { mounted = false; };
     }, [mode]);
 
     // Save run handler
-    const handleFinish = useCallback((metrics: any) => {
-        // Tag metrics with drill mode? 
-        // For MVP, just save as normal run.
-        saveRun(DRILL_DURATION, metrics).catch(console.error);
-    }, []);
+    const handleFinish = useCallback(async (metrics: any) => {
+        const isSession = searchParams.get('session') === 'true';
+        let sessionId: string | undefined;
+        let sessionStep: 'drill' | undefined;
+
+        // Prepare session meta
+        if (isSession) {
+            const session = getCurrentSession();
+            if (session.date === new Date().toLocaleDateString('en-CA') && session.details.step === 'drill') {
+                sessionId = session.date;
+                sessionStep = 'drill';
+            }
+        }
+
+        try {
+            const runId = await saveRun(DRILL_DURATION, metrics, { sessionId, sessionStep });
+
+            if (isSession && sessionId) {
+                const session = getCurrentSession();
+                // Update session to verify phase
+                const updated: DailySession = {
+                    ...session,
+                    details: {
+                        ...session.details,
+                        step: 'verify',
+                        drillRunId: runId
+                    }
+                };
+                saveSession(updated);
+            }
+
+            // Update Skill Progress (Drills count too!)
+            const skillRes = evaluateRunForSkill(metrics, DRILL_DURATION);
+            if (skillRes.progressed) {
+                const curSkill = getCurrentSkill();
+                if (skillRes.newCount === 1 && curSkill.node.id === skillRes.skill?.id) {
+                    // Note: Logic allows checking if we JUST unlocked content?
+                    // If we progressed, show toast
+                    setToast({ msg: `Skill Progress: +1 towards ${skillRes.skill.title}`, type: 'success' });
+                } else {
+                    setToast({ msg: `Skill Progress: +1 towards ${skillRes.skill?.title || 'Mastery'}`, type: 'success' });
+                }
+            }
+
+        } catch (e) {
+            console.error(e);
+        }
+    }, [searchParams]);
 
     const { snapshot, handleKeyDown, reset, togglePause } = useTypingEngine({
         words,
@@ -79,10 +150,17 @@ export function TrainPage() {
         reset();
     };
 
-    if (loading) return <div className="train-page">Loading drill...</div>;
-
     return (
         <div className="train-page">
+            {/* Toast Overlay */}
+            {toast && (
+                <Toast
+                    message={toast.msg}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+
             <header className="train-header">
                 <h1 className="train-title">Training Dojo</h1>
                 <div className="train-modes">
@@ -118,42 +196,10 @@ export function TrainPage() {
             {mode === 'pace' && state === 'running' && targetPace && snapshot.metrics && (
                 <div className="pace-visualizer">
                     <div className="pace-bar-container">
-                        {/* Simple feedback based on current raw WPM */}
-                        {(() => {
-                            // Use raw WPM for immediate feedback
-                            // Need to estimate current WPM from start
-                            // useTypingEngine doesn't expose real-time rawWpm in snapshot directly efficiently?
-                            // actually snapshot.metrics is null until finish? 
-                            // Wait, snapshot.metrics is only set on finish in my engine implementation!
-                            // I need real-time WPM for Pace Mode.
-                            // FIX: useTypingEngine needs to expose current WPM or I calc it here.
-
-                            // Approximate WPM: (chars / 5) / (elapsed_min)
-                            // elapsed = duration - timeRemaining
-                            const elapsedSec = (DRILL_DURATION - timeRemainingMs) / 1000;
-                            if (elapsedSec < 2) return <span>Starting...</span>;
-
-                            const chars = snapshot.words.slice(0, snapshot.currentWordIndex).reduce((acc, w) => acc + w.typed.length, 0) + snapshot.currentInput.length;
-                            const currentWpm = Math.round((chars / 5) / (elapsedSec / 60));
-
-                            const diff = currentWpm - targetPace;
-                            let status = "Good Pace";
-                            let color = "var(--color-success)";
-
-                            if (diff > 5) {
-                                status = "Too Fast! Slow down.";
-                                color = "var(--color-warning)";
-                            } else if (diff < -5) {
-                                status = "Too Slow! Push it.";
-                                color = "var(--color-error)";
-                            }
-
-                            return (
-                                <span style={{ color, fontWeight: 'bold' }}>
-                                    {currentWpm} WPM — {status}
-                                </span>
-                            );
-                        })()}
+                        {/* Simple feedback based on current raw WPM (Placeholder) */}
+                        <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                            Pace Guide Active
+                        </div>
                     </div>
                 </div>
             )}
@@ -168,13 +214,22 @@ export function TrainPage() {
                 </div>
             )}
 
-            <div className="train-timer">
-                {Math.ceil(timeRemainingMs / 1000)}s
-            </div>
+            {loading ? (
+                <div className="train-loading">
+                    <div className="train-spinner"></div>
+                    <p>Preparing Drill...</p>
+                </div>
+            ) : (
+                <>
+                    <div className="train-timer">
+                        {Math.ceil(timeRemainingMs / 1000)}s
+                    </div>
 
-            <div className="train-area-wrapper">
-                <TypingArea snapshot={snapshot} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="train-area-wrapper">
+                        <TypingArea snapshot={snapshot} onKeyDown={handleKeyDown} />
+                    </div>
+                </>
+            )}
 
             {/* Results (reuse standard components) */}
             {state === 'finished' && metrics && (
@@ -194,6 +249,15 @@ export function TrainPage() {
                     <button className="train-retry-btn" onClick={() => reset()}>
                         Retry Drill
                     </button>
+                    {searchParams.get('session') === 'true' && (
+                        <button
+                            className="train-retry-btn"
+                            style={{ background: 'var(--color-primary)', marginLeft: '1rem' }}
+                            onClick={() => navigate('/test')}
+                        >
+                            Return to Session →
+                        </button>
+                    )}
                 </div>
             )}
         </div>

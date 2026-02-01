@@ -1,0 +1,142 @@
+/* Pace Runner Styles */
+
+.page--runner {
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.runner-setup,
+.runner-result {
+    text-align: center;
+    background: var(--surface);
+    padding: var(--space-8);
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.3s ease;
+}
+
+.runner-setup h1 {
+    margin-bottom: var(--space-2);
+}
+
+.runner-setup p,
+.runner-result p {
+    color: var(--muted);
+    margin-bottom: var(--space-8);
+}
+
+.runner-setting {
+    margin-bottom: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.runner-setting label {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.runner-setting .highlight {
+    color: var(--accent);
+}
+
+.runner-setting input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: var(--space-4);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-text:hover {
+    color: var(--text);
+}
+
+/* In Game */
+.runner-game {
+    width: 100%;
+}
+
+.runner-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.hud-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.hud-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.hud-val {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.runner-arena {
+    padding: var(--space-4);
+    border-radius: var(--r);
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.arena--behind {
+    /* Visual warning when behind */
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+.runner-hint {
+    margin-top: var(--space-6);
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--muted);
+}
+
+.btn-small {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}

@@ -4,6 +4,7 @@ import './TopBar.css';
 const navItems = [
   { path: '/test', label: 'Test' },
   { path: '/train', label: 'Train' },
+  { path: '/practice', label: 'Practice' },
   { path: '/history', label: 'History' },
   { path: '/settings', label: 'Settings' },
 ];

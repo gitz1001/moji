@@ -1,0 +1,192 @@
+/* Library Page Styles */
+
+.library-container {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+/* Card Component */
+.lib-card {
+    display: flex;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: var(--space-4);
+    gap: var(--space-4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-items: center;
+}
+
+.lib-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Cover / Icon */
+.lib-card-cover,
+.lib-card-icon {
+    width: 60px;
+    height: 80px;
+    background-color: var(--surface2);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    color: var(--card-accent, var(--muted));
+    font-weight: 700;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.lib-card--paste .lib-card-icon {
+    background-color: rgba(77, 180, 255, 0.1);
+    color: var(--accent);
+    height: 60px;
+    width: 60px;
+    /* Square for actions */
+}
+
+.lib-card--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.lib-card--disabled:hover {
+    transform: none;
+    border-color: var(--border);
+}
+
+/* Content */
+.lib-card-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+.lib-card-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lib-card-author {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    margin: 0 0 8px 0;
+}
+
+.lib-card-meta {
+    font-size: var(--text-xs);
+    color: var(--muted);
+    background: var(--surface2);
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: capitalize;
+}
+
+.lib-card--action:hover .lib-card-icon {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background: var(--surface);
+    padding: var(--space-8);
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    width: 600px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    box-shadow: var(--shadow);
+}
+
+.modal-content h3 {
+    margin: 0;
+}
+
+.modal-input,
+.modal-textarea {
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-family: var(--font-sans);
+}
+
+.modal-textarea {
+    min-height: 300px;
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-4);
+}
+
+.modal-btn {
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.modal-btn--primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+}

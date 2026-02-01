@@ -1,0 +1,75 @@
+/* === Animations === */
+
+/* Shake - User Error Feedback */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    75% {
+        transform: translateX(4px);
+    }
+}
+
+.anim-shake {
+    animation: shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+/* Pop In - Success/Modal */
+@keyframes pop-in {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.anim-pop-in {
+    animation: pop-in 0.2s ease-out forwards;
+}
+
+/* Slide Up - List Items */
+@keyframes slide-up {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.anim-slide-up {
+    animation: slide-up 0.3s ease-out forwards;
+}
+
+/* Glow Pulse - High Scores */
+@keyframes glow-pulse {
+    0% {
+        box-shadow: 0 0 5px var(--accent);
+    }
+
+    50% {
+        box-shadow: 0 0 20px var(--accent);
+    }
+
+    100% {
+        box-shadow: 0 0 5px var(--accent);
+    }
+}
+
+.anim-glow {
+    animation: glow-pulse 2s infinite;
+}

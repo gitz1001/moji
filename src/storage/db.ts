@@ -8,6 +8,11 @@ export interface RunRecord {
     ts: number;
     durationMs: number;
     metrics: TypingMetrics;
+    sessionId?: string;
+    sessionStep?: 'baseline' | 'drill' | 'verify';
+    mode?: 'test' | 'game';
+    gameId?: string; // e.g., 'pace-runner', 'recovery-rush'
+    gameSettings?: any;
 }
 
 interface MojiDB extends DBSchema {
@@ -18,7 +23,7 @@ interface MojiDB extends DBSchema {
     };
 }
 
-const DB_NAME = 'moji-db';
+const DB_NAME = 'moji-db-v2';
 const DB_VERSION = 1;
 
 let dbPromise: Promise<IDBPDatabase<MojiDB>>;
@@ -35,4 +40,14 @@ export function getDB() {
         });
     }
     return dbPromise;
+}
+
+export async function deleteDatabase() {
+    // Close connection if open
+    if (dbPromise) {
+        const db = await dbPromise;
+        db.close();
+    }
+    await window.indexedDB.deleteDatabase(DB_NAME);
+    window.location.reload();
 }
