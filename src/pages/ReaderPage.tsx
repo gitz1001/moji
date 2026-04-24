@@ -15,9 +15,14 @@ export function ReaderPage() {
     const book = useMemo(() => getLibraryItem(id || ''), [id]);
 
     // 2. State: Location
-    // TODO: Load from localStorage
-    const [chapterIndex, setChapterIndex] = useState(0);
-    const [paragraphIndex, setParagraphIndex] = useState(0);
+    const [chapterIndex, setChapterIndex] = useState<number>(() => {
+        const saved = localStorage.getItem(`moji_progress_${id}`);
+        return saved ? Number(JSON.parse(saved).chapterIndex) || 0 : 0;
+    });
+    const [paragraphIndex, setParagraphIndex] = useState<number>(() => {
+        const saved = localStorage.getItem(`moji_progress_${id}`);
+        return saved ? Number(JSON.parse(saved).paragraphIndex) || 0 : 0;
+    });
 
     // 3. Current Content
     const currentChapter = book?.chapters[chapterIndex];
@@ -62,11 +67,11 @@ export function ReaderPage() {
         if (paragraphIndex > 0) {
             setParagraphIndex(pi => pi - 1);
             reset();
-        } else if (chapterIndex > 0) {
+        } else if (chapterIndex > 0 && book) {
             // Go to end of prev chapter
+            const prevCh = book.chapters[chapterIndex - 1];
             setChapterIndex(ci => ci - 1);
-            // TODO: setParagraphIndex(last)
-            setParagraphIndex(0); // lazy for now
+            setParagraphIndex(prevCh ? prevCh.paragraphs.length - 1 : 0);
             reset();
         }
     };
@@ -80,20 +85,7 @@ export function ReaderPage() {
         }
     }, [book, chapterIndex, paragraphIndex]);
 
-    // Initial Load Progress
-    useEffect(() => {
-        if (book) {
-            const key = `moji_progress_${book.id}`;
-            const saved = localStorage.getItem(key);
-            if (saved) {
-                try {
-                    const { chapterIndex: ci, paragraphIndex: pi } = JSON.parse(saved);
-                    setChapterIndex(ci);
-                    setParagraphIndex(pi);
-                } catch (e) { /* ignore corrupt */ }
-            }
-        }
-    }, [book]);
+    // Initial load handled in useState to avoid flicker.
 
     if (!book) return <div className="page">Book not found.</div>;
     if (!currentChapter || !currentParagraph) return <div className="page">Content error.</div>;

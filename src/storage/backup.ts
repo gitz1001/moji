@@ -16,11 +16,20 @@ export interface BackupData {
 export async function exportBackup(): Promise<void> {
     const runs = await getAllRuns();
 
+    // Grab all settings from localStorage
+    const settings: Record<string, string> = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('moji_')) {
+            settings[key] = localStorage.getItem(key) || '';
+        }
+    }
+
     const backup: BackupData = {
         version: BACKUP_VERSION,
         exportedAt: Date.now(),
         runs,
-        settings: {}, // TODO: Add real settings when available
+        settings,
     };
 
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
@@ -53,10 +62,19 @@ export async function importBackup(file: File): Promise<{ success: boolean; coun
 
         // Import runs
         const importedCount = await importRuns(data.runs);
+        // Import settings
+        if (data.settings) {
+            for (const [key, value] of Object.entries(data.settings)) {
+                if (key.startsWith('moji_')) {
+                    localStorage.setItem(key, value as string);
+                }
+            }
+        }
+
         return {
             success: true,
             count: importedCount,
-            message: `Successfully imported ${importedCount} runs (${data.runs.length - importedCount} duplicates skipped)`
+            message: `Successfully imported ${importedCount} runs (${data.runs.length - importedCount} duplicates skipped) and restored settings.`
         };
 
     } catch (error) {

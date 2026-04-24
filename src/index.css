@@ -1,3 +1,13 @@
+@import './styles/variables.css';
+@import './styles/animations.css';
+@import './styles/global.css';
+
+/** Moji Core Entry Point
+ *  ---------------------------------------------------------
+ *  Loads standard font families + baseline utilities.
+ *  Theme variables are in variables.css.
+ */
+
 /* Global variables & Typography polish */
 *,
 *::before,
@@ -5,8 +15,6 @@
     box-sizing: border-box;
 }
 
-@import './styles/variables.css';
-@import './styles/animations.css';
 /* Typography polish handled via variables.css mappings too */
 
 body {

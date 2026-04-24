@@ -5,6 +5,7 @@ import { useTypingEngine } from '../engine';
 import { TypingArea } from '../components/TypingArea';
 import { saveRun } from '../storage/runs';
 import './PaceRunner.css'; // Reuse styles for now
+import { DiamondIcon, TimerIcon } from '../components/icons';
 
 export function RecoveryRush() {
     const navigate = useNavigate();
@@ -78,7 +79,7 @@ export function RecoveryRush() {
         <div className="page page--runner">
             {gameState === 'setup' && (
                 <div className="runner-setup">
-                    <h1>Recovery Rush 💎</h1>
+                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>Recovery Rush <DiamondIcon /></h1>
                     <p>Accuracy Logic: You <strong>cannot</strong> proceed to the next word until the current one is perfect.</p>
 
                     <div className="runner-setting">
@@ -123,7 +124,7 @@ export function RecoveryRush() {
 
             {gameState === 'finished' && (
                 <div className="runner-result runner-result--won anim-pop-in">
-                    <h1>Time's Up! ⏱️</h1>
+                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>Time's Up! <TimerIcon /></h1>
                     <div className="stat-grid" style={{ marginBottom: '2rem' }}>
                         <div>
                             <div className="stat-val">{snapshot.metrics?.correctedWpm}</div>

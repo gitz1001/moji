@@ -1,4 +1,5 @@
 /** LibraryPage — Built-in & User Collection */
+import { DocumentIcon, FolderIcon } from '../components/icons';
 
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -51,14 +52,14 @@ export function LibraryPage() {
             <h2 className="section-title">Operations</h2>
             <div className="library-grid" style={{ marginBottom: 'var(--space-8)' }}>
                 <div className="lib-card lib-card--action" onClick={() => setPasteModalOpen(true)}>
-                    <div className="lib-card-icon">📄</div>
+                    <div className="lib-card-icon"><DocumentIcon /></div>
                     <div className="lib-card-content">
                         <h3 className="lib-card-title">Paste Text</h3>
                         <p className="lib-card-desc">Create from clipboard.</p>
                     </div>
                 </div>
                 <div className="lib-card lib-card--action" onClick={() => fileInputRef.current?.click()}>
-                    <div className="lib-card-icon">📂</div>
+                    <div className="lib-card-icon"><FolderIcon /></div>
                     <div className="lib-card-content">
                         <h3 className="lib-card-title">Import File</h3>
                         <p className="lib-card-desc">TXT, MD, PDF supported.</p>

@@ -1,4 +1,5 @@
 /** TestPage — Hero Grid Layout + Focus Mode */
+import { EyeOpenIcon, EyeClosedIcon } from '../components/icons';
 
 import { useMemo, useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -202,7 +203,7 @@ export function TestPage() {
                                     onClick={() => setFocusMode(!focusMode)}
                                     title="Toggle Focus Mode"
                                 >
-                                    {focusMode ? '👁️' : '🕶️'}
+                                    {focusMode ? <EyeOpenIcon /> : <EyeClosedIcon />}
                                 </button>
                             </div>
                         )}

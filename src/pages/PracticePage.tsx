@@ -1,4 +1,5 @@
 /** PracticePage — Wrapper for Library & Games */
+import { RunnerIcon, DiamondIcon } from '../components/icons';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +41,7 @@ export function PracticePage() {
                     <div className="library-grid">
                         <div className="lib-card" onClick={() => navigate('/practice/pace-runner')}>
                             <div className="lib-card-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
-                                🏃
+                                <RunnerIcon />
                             </div>
                             <div className="lib-card-content">
                                 <h3 className="lib-card-title">Pace Runner</h3>
@@ -50,7 +51,7 @@ export function PracticePage() {
                         </div>
                         <div className="lib-card" onClick={() => navigate('/practice/recovery-rush')}>
                             <div className="lib-card-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
-                                💎
+                                <DiamondIcon />
                             </div>
                             <div className="lib-card-content">
                                 <h3 className="lib-card-title">Recovery Rush</h3>

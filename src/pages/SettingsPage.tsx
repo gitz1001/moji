@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { exportBackup, importBackup, deleteDatabase, getStorageDiagnostics, type StorageInfo } from '../storage';
+import { CheckIcon, WarningIcon, PlayIcon } from '../components/icons';
 import {
     loadAudioSettings,
     saveAudioSettings,
@@ -79,9 +80,9 @@ export function SettingsPage() {
                         <div className="settings-info">
                             <h3 className="settings-label">Storage Status</h3>
                             <p className="settings-desc">
-                                {storageInfo?.mode === 'indexeddb' && <span style={{ color: 'var(--color-primary)' }}>✅ Optimized (IndexedDB)</span>}
-                                {storageInfo?.mode === 'localstorage' && <span style={{ color: 'var(--color-warning)' }}>⚠️ Fallback (LocalStorage)</span>}
-                                {storageInfo?.mode === 'hybrid' && <span style={{ color: 'var(--color-warning)' }}>⚠️ Mixed Data</span>}
+                                {storageInfo?.mode === 'indexeddb' && <span style={{ color: 'var(--color-primary)' }}><CheckIcon style={{verticalAlign:'middle',marginRight:'4px'}}/> Optimized (IndexedDB)</span>}
+                                {storageInfo?.mode === 'localstorage' && <span style={{ color: 'var(--color-warning)' }}><WarningIcon style={{verticalAlign:'middle',marginRight:'4px'}}/> Fallback (LocalStorage)</span>}
+                                {storageInfo?.mode === 'hybrid' && <span style={{ color: 'var(--color-warning)' }}><WarningIcon style={{verticalAlign:'middle',marginRight:'4px'}}/> Mixed Data</span>}
                             </p>
                         </div>
                         <div className="settings-meta" style={{ textAlign: 'right', fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
@@ -207,7 +208,6 @@ export function SettingsPage() {
                                             onClick={() => updateAudio({ mode: m })}
                                             title={AUDIO_PACK_META[m as keyof typeof AUDIO_PACK_META]?.desc}
                                         >
-                                            {AUDIO_PACK_META[m as keyof typeof AUDIO_PACK_META]?.emoji}{' '}
                                             {AUDIO_PACK_META[m as keyof typeof AUDIO_PACK_META]?.label}
                                         </button>
                                     ))}
@@ -267,7 +267,7 @@ export function SettingsPage() {
                                     className="settings-btn"
                                     onClick={() => playPreview(audioSettings.mode)}
                                 >
-                                    ▶ Play Sample
+                                    <PlayIcon style={{verticalAlign:'middle'}}/> Play Sample
                                 </button>
                             </div>
                         </>

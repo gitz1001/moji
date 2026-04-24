@@ -1,4 +1,5 @@
 /** PaceRunner — Specific Speed Training Game */
+import { RunnerIcon, TrophyIcon } from '../components/icons';
 
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -157,7 +158,7 @@ export function PaceRunner() {
         <div className="page page--runner">
             {gameState === 'setup' && (
                 <div className="runner-setup">
-                    <h1>Pace Runner 🏃</h1>
+                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>Pace Runner <RunnerIcon /></h1>
                     <p>Race against a ghost runner set to your target speed.</p>
 
                     <div className="runner-setting">
@@ -206,7 +207,7 @@ export function PaceRunner() {
 
             {gameState === 'won' && (
                 <div className="runner-result runner-result--won anim-pop-in">
-                    <h1>Finished! 🎉</h1>
+                    <h1 style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>Finished! <TrophyIcon /></h1>
                     <p>You maintained pace with the {targetWpm} WPM runner.</p>
                     <button className="btn-primary" onClick={() => setGameState('setup')}>Race Again (Enter)</button>
                     <button className="btn-text" onClick={() => navigate('/practice')}>Back to Library</button>

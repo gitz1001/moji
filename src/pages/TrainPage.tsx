@@ -1,4 +1,5 @@
 /** TrainPage — Drill Modes */
+import { TargetIcon, TimerIcon, BrainIcon } from '../components/icons';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -168,19 +169,19 @@ export function TrainPage() {
                         className={`train-mode-btn ${mode === 'accuracy' ? 'active' : ''}`}
                         onClick={() => switchMode('accuracy')}
                     >
-                        🎯 Accuracy Lock
+                        <TargetIcon className="mode-icon" /> Accuracy Lock
                     </button>
                     <button
                         className={`train-mode-btn ${mode === 'pace' ? 'active' : ''}`}
                         onClick={() => switchMode('pace')}
                     >
-                        ⏱️ Pace Mode
+                        <TimerIcon className="mode-icon" /> Pace Mode
                     </button>
                     <button
                         className={`train-mode-btn ${mode === 'weakness' ? 'active' : ''}`}
                         onClick={() => switchMode('weakness')}
                     >
-                        🧠 Weakness Drill
+                        <BrainIcon className="mode-icon" /> Weakness Drill
                     </button>
                 </div>
             </header>

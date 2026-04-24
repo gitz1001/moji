@@ -36,13 +36,13 @@ export const DEFAULT_AUDIO_SETTINGS: AudioSettings = {
 };
 
 // Pack metadata for the UI
-export const AUDIO_PACK_META: Record<Exclude<AudioMode, 'off'>, { label: string; emoji: string; desc: string }> = {
-    'mechanical':    { emoji: '⌨️',  label: 'Mechanical',    desc: 'Realistic thock & clack' },
-    'cute':          { emoji: '🫧',  label: 'Cute',          desc: 'Bubbly playful pops' },
-    'silent-rhythm': { emoji: '🎯',  label: 'Silent Rhythm', desc: 'Subtle metronome ticks' },
-    'arcade':        { emoji: '🕹️', label: 'Arcade',        desc: 'Retro 8-bit blips' },
-    'nature':        { emoji: '🍃',  label: 'Nature',        desc: 'Wood, water & wind' },
-    'coach':         { emoji: '🎓',  label: 'Coach',         desc: 'Neutral + clear error chime' },
+export const AUDIO_PACK_META: Record<Exclude<AudioMode, 'off'>, { label: string; desc: string }> = {
+    'mechanical':    { label: 'Mechanical',    desc: 'Realistic thock & clack' },
+    'cute':          { label: 'Cute',          desc: 'Bubbly playful pops' },
+    'silent-rhythm': { label: 'Silent Rhythm', desc: 'Subtle metronome ticks' },
+    'arcade':        { label: 'Arcade',        desc: 'Retro 8-bit blips' },
+    'nature':        { label: 'Nature',        desc: 'Wood, water & wind' },
+    'coach':         { label: 'Coach',         desc: 'Neutral + clear error chime' },
 };
 
 // Keyboard key → stereo pan position (-1 left … +1 right)
@@ -450,7 +450,8 @@ export function playGameAlert(type: 'behind' | 'win' | 'lose'): void {
     if (_settings.mode === 'off') return;
     try {
         const ctx = _getCtx();
-        if (!ctx || !_master) return;
+        const masterNode = _master;
+        if (!ctx || !masterNode) return;
         const now = ctx.currentTime;
         const vol = _settings.volume;
 
@@ -459,7 +460,7 @@ export function playGameAlert(type: 'behind' | 'win' | 'lose'): void {
             const g = ctx.createGain();
             g.gain.setValueAtTime(0.18 * vol, now);
             g.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
-            osc.connect(g); g.connect(_master);
+            osc.connect(g); g.connect(masterNode);
             osc.start(now); osc.stop(now + 0.26);
 
         } else if (type === 'win') {
@@ -468,7 +469,7 @@ export function playGameAlert(type: 'behind' | 'win' | 'lose'): void {
                 const g = ctx.createGain(); const t = now + i * 0.085;
                 g.gain.setValueAtTime(0.22 * vol, t);
                 g.gain.exponentialRampToValueAtTime(0.0001, t + 0.30);
-                osc.connect(g); g.connect(_master);
+                osc.connect(g); g.connect(masterNode);
                 osc.start(t); osc.stop(t + 0.34);
             });
 
@@ -478,7 +479,7 @@ export function playGameAlert(type: 'behind' | 'win' | 'lose'): void {
                 const g = ctx.createGain(); const t = now + i * 0.095;
                 g.gain.setValueAtTime(0.18 * vol, t);
                 g.gain.exponentialRampToValueAtTime(0.0001, t + 0.26);
-                osc.connect(g); g.connect(_master);
+                osc.connect(g); g.connect(masterNode);
                 osc.start(t); osc.stop(t + 0.30);
             });
         }
