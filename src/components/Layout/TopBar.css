@@ -19,11 +19,42 @@
     justify-content: space-between;
 }
 
+/* Logo: icon + wordmark */
 .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    padding: 4px 6px;
+    transition: opacity var(--transition-fast);
+}
+
+.topbar-logo:hover {
+    opacity: 0.85;
+    text-decoration: none;
+}
+
+.topbar-logo-icon {
+    display: block;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(77, 180, 255, 0.45));
+    transition: filter var(--transition-normal);
+}
+
+.topbar-logo:hover .topbar-logo-icon {
+    filter: drop-shadow(0 0 12px rgba(77, 180, 255, 0.75));
+}
+
+.topbar-logo-text {
     font-size: var(--text-xl);
     font-weight: 700;
-    color: var(--color-text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff 30%, #4DB4FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .topbar-nav {
