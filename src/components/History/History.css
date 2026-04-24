@@ -1,72 +1,175 @@
-/* History Components Styles */
+/* History Dashboard Components — Cyberpunk/Dataverse */
 
+/* ── Stat Cards Grid ─────────────────────────────────── */
 .history-dashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
     margin-bottom: var(--space-6);
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* ── Stat Card ───────────────────────────────────────── */
 .history-stat-card {
-    background-color: var(--color-bg-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
+    background: rgba(10, 17, 35, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    border-radius: 18px;
+    padding: 22px 22px 18px;
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.22s ease, box-shadow 0.22s ease;
+    box-sizing: border-box;
 }
 
+/* Shimmer top edge */
+.history-stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.35), transparent);
+    pointer-events: none;
+}
+
+.history-stat-card:hover {
+    border-color: rgba(0, 240, 255, 0.2);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3), 0 0 18px rgba(0, 240, 255, 0.06);
+}
+
+/* ── Stat Header ─────────────────────────────────────── */
 .history-stat-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-2);
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .history-stat-label {
-    font-size: var(--text-xs);
+    font-size: 10px;
     color: var(--color-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
+    letter-spacing: 0.12em;
+    font-weight: 700;
 }
 
+/* Icon badge */
+.history-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(0, 240, 255, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(0, 240, 255, 0.18);
+    flex-shrink: 0;
+}
+
+.history-stat-icon--gold {
+    background: rgba(251, 191, 36, 0.08);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.2);
+}
+
+.history-stat-icon--magenta {
+    background: rgba(255, 0, 229, 0.07);
+    color: var(--accent2);
+    border-color: rgba(255, 0, 229, 0.18);
+}
+
+/* ── Big Number ──────────────────────────────────────── */
 .history-stat-value {
     font-family: var(--font-mono);
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    color: var(--color-text-primary);
-    line-height: 1.1;
-    margin-bottom: var(--space-1);
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    /* Avoid clipping with gradient: use plain white, let the card do the theming */
 }
 
 .history-stat-unit {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     font-weight: 400;
+    font-family: var(--font-sans);
 }
 
+/* ── Sub Info ────────────────────────────────────────── */
 .history-stat-sub {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
     display: flex;
-    gap: var(--space-2);
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 2px;
 }
 
 .history-stat-sep {
-    color: var(--color-border);
+    color: rgba(0, 240, 255, 0.25);
+    font-size: 0.6rem;
 }
 
-/* PB List */
+/* ── Game Stats ──────────────────────────────────────── */
+.history-game-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.history-game-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 9px;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.history-game-row:hover {
+    background: rgba(0, 240, 255, 0.05);
+    border-color: rgba(0, 240, 255, 0.15);
+}
+
+.game-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.game-val {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--accent);
+}
+
+/* ── PB List ─────────────────────────────────────────── */
 .history-pb-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: 8px;
 }
 
 .history-pb-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: var(--text-sm);
 }
 
@@ -76,16 +179,18 @@
 
 .history-pb-val {
     font-family: var(--font-mono);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text-primary);
 }
 
-/* Sparkline */
+/* ── Sparkline ───────────────────────────────────────── */
 .sparkline {
-    opacity: 0.8;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.45));
 }
 
+/* ── Legacy emoji wrapper ────────────────────────────── */
 .emoji-icon {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 1;
 }

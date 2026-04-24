@@ -47,13 +47,12 @@ export function SettingsPage() {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        setStatus({ type: 'info', msg: 'Importing...' });
+        setStatus({ type: 'info', msg: 'Importing…' });
 
         try {
             const result = await importBackup(file);
             if (result.success) {
                 setStatus({ type: 'success', msg: result.message });
-                // Reset input so same file can be selected again if needed
                 if (fileInputRef.current) fileInputRef.current.value = '';
             } else {
                 setStatus({ type: 'error', msg: result.message });
@@ -71,32 +70,47 @@ export function SettingsPage() {
                 Customize your typing experience and manage your data.
             </p>
 
+            {/* ── Data Management ─────────────────────────────── */}
             <div className="settings-section">
                 <h2 className="settings-section-title">Data Management</h2>
 
-                {/* Storage Health Card */}
-                <div className="settings-card" style={{ marginBottom: 'var(--space-4)' }}>
+                {/* Storage Health */}
+                <div className="settings-card" style={{ marginBottom: '12px' }}>
                     <div className="settings-row">
                         <div className="settings-info">
                             <h3 className="settings-label">Storage Status</h3>
-                            <p className="settings-desc">
-                                {storageInfo?.mode === 'indexeddb' && <span style={{ color: 'var(--color-primary)' }}><CheckIcon style={{verticalAlign:'middle',marginRight:'4px'}}/> Optimized (IndexedDB)</span>}
-                                {storageInfo?.mode === 'localstorage' && <span style={{ color: 'var(--color-warning)' }}><WarningIcon style={{verticalAlign:'middle',marginRight:'4px'}}/> Fallback (LocalStorage)</span>}
-                                {storageInfo?.mode === 'hybrid' && <span style={{ color: 'var(--color-warning)' }}><WarningIcon style={{verticalAlign:'middle',marginRight:'4px'}}/> Mixed Data</span>}
-                            </p>
+                            <div className="settings-storage-status">
+                                {storageInfo?.mode === 'indexeddb' && (
+                                    <span style={{ color: 'var(--color-success)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                        <CheckIcon style={{ verticalAlign: 'middle' }} /> Optimized (IndexedDB)
+                                    </span>
+                                )}
+                                {storageInfo?.mode === 'localstorage' && (
+                                    <span style={{ color: 'var(--color-warning)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                        <WarningIcon style={{ verticalAlign: 'middle' }} /> Fallback (LocalStorage)
+                                    </span>
+                                )}
+                                {storageInfo?.mode === 'hybrid' && (
+                                    <span style={{ color: 'var(--color-warning)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                        <WarningIcon style={{ verticalAlign: 'middle' }} /> Mixed Data
+                                    </span>
+                                )}
+                                {!storageInfo && <span style={{ color: 'var(--color-text-muted)' }}>Loading…</span>}
+                            </div>
                         </div>
-                        <div className="settings-meta" style={{ textAlign: 'right', fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
-                            <div>{storageInfo ? `${storageInfo.runCount} runs saved` : 'Loading...'}</div>
+                        <div className="settings-meta">
+                            <div>{storageInfo ? `${storageInfo.runCount} runs saved` : ''}</div>
                             <div>{storageInfo ? `~${(storageInfo.usageBytes / 1024).toFixed(1)} KB used` : ''}</div>
                         </div>
                     </div>
                     {storageInfo && storageInfo.mode !== 'indexeddb' && (
-                        <div className="settings-alert" style={{ marginTop: 'var(--space-2)', fontSize: 'var(--text-xs)', color: 'var(--color-warning)' }}>
-                            Running in fallback mode. Browser storage may be limited. Please export backups regularly.
+                        <div className="settings-alert">
+                            Running in fallback mode — browser storage may be limited. Export backups regularly.
                         </div>
                     )}
                 </div>
 
+                {/* Export / Import */}
                 <div className="settings-card">
                     <div className="settings-row">
                         <div className="settings-info">
@@ -129,21 +143,17 @@ export function SettingsPage() {
                 </div>
             </div>
 
+            {/* ── Danger Zone ─────────────────────────────────── */}
             <div className="settings-section">
                 <h2 className="settings-section-title">Danger Zone</h2>
-                <div className="settings-card" style={{ borderColor: 'var(--color-error)' }}>
+                <div className="settings-card settings-card--danger">
                     <div className="settings-row">
                         <div className="settings-info">
                             <h3 className="settings-label" style={{ color: 'var(--color-error)' }}>Factory Reset</h3>
                             <p className="settings-desc">Delete all history and settings. Cannot be undone.</p>
                         </div>
                         <button
-                            className="settings-btn"
-                            style={{
-                                borderColor: 'var(--color-error)',
-                                color: 'var(--color-error)',
-                                background: 'transparent'
-                            }}
+                            className="settings-btn settings-btn--danger"
                             onClick={async () => {
                                 if (window.confirm('Are you definitely sure? This will wipe all data.')) {
                                     await deleteDatabase();
@@ -156,15 +166,16 @@ export function SettingsPage() {
                 </div>
             </div>
 
-            <div className="settings-section">
-                {status && (
+            {/* ── Status Message ───────────────────────────────── */}
+            {status && (
+                <div className="settings-section">
                     <div className={`settings-status settings-status--${status.type}`}>
                         {status.msg}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
 
-            {/* ── Sound Settings ─────────────────────────── */}
+            {/* ── Sound Settings ───────────────────────────────── */}
             <div className="settings-section">
                 <h2 className="settings-section-title">Sound</h2>
                 <div className="settings-card">
@@ -173,9 +184,7 @@ export function SettingsPage() {
                     <div className="settings-row">
                         <div className="settings-info">
                             <h3 className="settings-label">Typing Sounds</h3>
-                            <p className="settings-desc">
-                                Synthesized keystroke audio. Low-latency, works offline.
-                            </p>
+                            <p className="settings-desc">Synthesized keystroke audio. Low-latency, works offline.</p>
                         </div>
                         <button
                             id="audio-toggle-btn"
@@ -193,7 +202,7 @@ export function SettingsPage() {
                         <>
                             <div className="settings-separator" />
 
-                            {/* Mode pills */}
+                            {/* Sound Pack */}
                             <div className="settings-row">
                                 <div className="settings-info">
                                     <h3 className="settings-label">Sound Pack</h3>
@@ -222,16 +231,15 @@ export function SettingsPage() {
                                     <h3 className="settings-label">Volume</h3>
                                     <p className="settings-desc">Master volume for all keystroke sounds.</p>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div className="volume-row-controls">
                                     <input
                                         id="audio-volume-slider"
                                         type="range"
                                         min="0" max="1" step="0.05"
                                         value={audioSettings.volume}
                                         onChange={e => updateAudio({ volume: parseFloat(e.target.value) })}
-                                        style={{ width: '100px' }}
                                     />
-                                    <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)', minWidth: '32px' }}>
+                                    <span className="volume-value">
                                         {Math.round(audioSettings.volume * 100)}%
                                     </span>
                                 </div>
@@ -239,7 +247,7 @@ export function SettingsPage() {
 
                             <div className="settings-separator" />
 
-                            {/* Silence in Focus Mode */}
+                            {/* Focus Mode Silence */}
                             <div className="settings-row">
                                 <div className="settings-info">
                                     <h3 className="settings-label">Focus Mode Silence</h3>
@@ -256,7 +264,7 @@ export function SettingsPage() {
 
                             <div className="settings-separator" />
 
-                            {/* Test button */}
+                            {/* Test Sound */}
                             <div className="settings-row">
                                 <div className="settings-info">
                                     <h3 className="settings-label">Test Sound</h3>
@@ -267,7 +275,7 @@ export function SettingsPage() {
                                     className="settings-btn"
                                     onClick={() => playPreview(audioSettings.mode)}
                                 >
-                                    <PlayIcon style={{verticalAlign:'middle'}}/> Play Sample
+                                    <PlayIcon style={{ verticalAlign: 'middle' }} /> Play Sample
                                 </button>
                             </div>
                         </>
@@ -275,7 +283,7 @@ export function SettingsPage() {
                 </div>
             </div>
 
-            {/* ── Appearance ─────────────────────────────── */}
+            {/* ── Appearance ───────────────────────────────────── */}
             <div className="settings-section">
                 <h2 className="settings-section-title">Appearance</h2>
                 <div className="settings-card">
@@ -295,7 +303,6 @@ export function SettingsPage() {
                                 } else {
                                     document.documentElement.removeAttribute('data-theme');
                                 }
-                                // Force re-render of button text (hacky but works for simple toggle)
                                 setStatus({ type: 'success', msg: `Theme set to ${next} mode` });
                             }}
                         >

@@ -79,12 +79,16 @@
 }
 
 .topbar-tab--active {
-    color: var(--color-accent);
-    background-color: var(--color-accent-muted);
+    color: #030b1a;
+    background: linear-gradient(135deg, var(--accent) 0%, #0099ff 100%);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    font-weight: 600;
 }
 
 .topbar-tab--active:hover {
-    color: var(--color-accent-hover);
+    color: #030b1a;
+    background: linear-gradient(135deg, #7ff5ff 0%, #33c9ff 100%);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
 }
 
 /* Responsive: ensure tabs stay visible on smaller screens */

@@ -1,8 +1,9 @@
-/** DashboardStats Component */
+/** DashboardStats Component — Premium Redesign */
 
 import { useMemo } from 'react';
 import { type RunRecord, calculateStats } from '../../storage';
 import { Sparkline } from './Sparkline';
+import { TrophyIcon, RunnerIcon } from '../icons';
 import './History.css';
 
 interface DashboardStatsProps {
@@ -16,8 +17,6 @@ export function DashboardStats({ runs }: DashboardStatsProps) {
     }, [runs]);
 
     const recentTrend = useMemo(() => {
-        // Last 20 runs (test mode only for WPM trend?) 
-        // Or all? Let's do all for now, or filter by mode='test'
         return runs
             .filter(r => !r.mode || r.mode === 'test')
             .slice(0, 20)
@@ -29,7 +28,7 @@ export function DashboardStats({ runs }: DashboardStatsProps) {
 
     return (
         <div className="history-dashboard">
-            {/* General Stats */}
+            {/* Average WPM + Sparkline */}
             <div className="history-stat-card">
                 <div className="history-stat-header">
                     <span className="history-stat-label">Average WPM</span>
@@ -47,26 +46,28 @@ export function DashboardStats({ runs }: DashboardStatsProps) {
             <div className="history-stat-card">
                 <div className="history-stat-header">
                     <span className="history-stat-label">Best WPM</span>
-                    <span className="emoji-icon">🏆</span>
+                    <span className="history-stat-icon history-stat-icon--gold">
+                        <TrophyIcon />
+                    </span>
                 </div>
                 <div className="history-stat-value">{stats.bestWpm}</div>
-                <div className="history-stat-sub">
-                    Personal Record
-                </div>
+                <div className="history-stat-sub">Personal Record</div>
             </div>
 
-            {/* Game Stats (if any) */}
+            {/* Game Stats */}
             {Object.keys(stats.gameStats).length > 0 && (
                 <div className="history-stat-card">
                     <div className="history-stat-header">
                         <span className="history-stat-label">Games</span>
-                        <span className="emoji-icon">🎮</span>
+                        <span className="history-stat-icon history-stat-icon--magenta">
+                            <RunnerIcon />
+                        </span>
                     </div>
                     <div className="history-game-list">
                         {Object.entries(stats.gameStats).map(([gameId, data]: [string, { played: number; bestWpm: number }]) => (
                             <div key={gameId} className="history-game-row">
                                 <span className="game-name">{gameId === 'pace-runner' ? 'Pace Runner' : 'Recovery Rush'}</span>
-                                <span className="game-val">{data.bestWpm} WPM (Best)</span>
+                                <span className="game-val">{data.bestWpm} WPM</span>
                             </div>
                         ))}
                     </div>

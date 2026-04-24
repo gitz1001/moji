@@ -115,10 +115,14 @@
 .test-results {
     margin-top: var(--space-6);
     padding: var(--space-8);
-    background-color: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
+    background-color: rgba(10, 17, 35, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    border-radius: 18px;
     text-align: center;
+    margin-bottom: var(--space-6);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3), 0 0 18px rgba(0, 240, 255, 0.06);
 }
 
 .test-results-grid {
@@ -128,16 +132,97 @@
 }
 
 .test-result-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text);
+    font-size: 3rem;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
 }
 
 .test-result-label {
-    font-size: 0.85rem;
+    font-size: 10px;
     color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    margin-top: 4px;
+    display: block;
+}
+
+.test-result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.test-result-item--primary .test-result-value {
+    color: var(--accent);
+}
+
+.test-results-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: var(--space-4);
+    background: linear-gradient(120deg, #ffffff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.test-actions {
+    margin-top: var(--space-6);
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.test-action-btn {
+    padding: 10px 24px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.02em;
+}
+
+.test-action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.test-action-btn--primary {
+    background: linear-gradient(135deg, var(--accent) 0%, #0099ff 100%);
+    color: #030b1a;
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.test-action-btn--primary:hover {
+    background: linear-gradient(135deg, #7ff5ff 0%, #33c9ff 100%);
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.45), 0 4px 12px rgba(0,0,0,0.25);
+    border-color: transparent;
+}
+
+.test-restart-btn-idle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.test-restart-btn-idle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0, 240, 255, 0.05);
 }
 
 /* Pause Overlay */

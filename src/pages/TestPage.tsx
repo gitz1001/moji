@@ -209,10 +209,7 @@ export function TestPage() {
                         )}
                     </div>
 
-                    {/* Typing Area: The Hero */}
-                    <TypingArea snapshot={snapshot} onKeyDown={handleKeyDown} />
-
-                    {/* Results: Slide-in/Appear Below */}
+                    {/* Results: Slide-in/Appear Below Header */}
                     {state === 'finished' && metrics && (
                         <div className="test-results slide-in">
                             <h2 className="test-results-title">Results</h2>
@@ -236,17 +233,28 @@ export function TestPage() {
                             )}
 
                             <div className="test-actions">
-                                <button className="test-restart-btn" onClick={handleRestart}>
+                                <button className="test-action-btn test-action-btn--primary" onClick={handleRestart}>
                                     New Test
+                                </button>
+                                <button className="test-action-btn" onClick={() => navigate('/train')}>
+                                    Train
+                                </button>
+                                <button className="test-action-btn" onClick={() => navigate('/practice')}>
+                                    Practice
                                 </button>
                             </div>
                         </div>
                     )}
 
+                    {/* Typing Area: The Hero (faded if finished) */}
+                    <div style={{ opacity: state === 'finished' ? 0.3 : 1, transition: 'opacity 0.3s ease' }}>
+                        <TypingArea snapshot={snapshot} onKeyDown={handleKeyDown} />
+                    </div>
+
                     {/* Restart when idle (if not results) */}
                     {state === 'idle' && (
                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <button className="test-restart-btn" onClick={handleRestart} style={{ fontSize: '0.85rem', padding: '8px 16px', opacity: 0.8 }}>
+                            <button className="test-restart-btn-idle" onClick={handleRestart} style={{ fontSize: '0.85rem', padding: '8px 16px', opacity: 0.8 }}>
                                 New Test (Enter)
                             </button>
                         </div>
