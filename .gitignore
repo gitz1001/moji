@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ignored documentation files
+docs/agent_kickoff.md
+docs/missions.md
+docs/style_rules.md
+docs/system_review.md
