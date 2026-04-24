@@ -128,3 +128,40 @@
     font-style: italic;
     font-size: var(--text-sm);
 }
+
+/* Pill button group — used for Sound Pack mode selector */
+.settings-pill-group {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    max-width: 260px;
+    justify-content: flex-end;
+}
+
+.settings-pill {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full, 999px);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        color var(--transition-fast),
+        background-color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.settings-pill:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-text-muted);
+}
+
+.settings-pill--active {
+    color: var(--color-accent);
+    background-color: var(--color-accent-muted);
+    border-color: var(--color-accent);
+    font-weight: 600;
+}

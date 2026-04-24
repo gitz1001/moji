@@ -5,6 +5,7 @@ import type { EngineState, EngineSnapshot, WordState, TypingMetrics, ErrorEvent,
 import { calculateMetrics } from './metrics';
 import { calculateConsistency } from './consistency';
 import { generateInsight } from './insights';
+import { playKeystroke } from './audio';
 
 /** Sampling interval for WPM timeline (ms) */
 const TIMELINE_SAMPLE_INTERVAL_MS = 1000;
@@ -13,6 +14,7 @@ interface UseTypingEngineOptions {
     words: string[];
     durationMs: number;
     mode?: DrillMode;
+    focusMode?: boolean;
     onFinish?: (metrics: TypingMetrics) => void;
 }
 
@@ -28,6 +30,7 @@ export function useTypingEngine({
     words,
     durationMs,
     mode = 'standard',
+    focusMode = false,
     onFinish,
 }: UseTypingEngineOptions): UseTypingEngineReturn {
     // === React State ===
@@ -236,6 +239,7 @@ export function useTypingEngine({
 
         if (key === 'Backspace') {
             e.preventDefault();
+            playKeystroke('Backspace', 'backspace', focusMode);
             setCurrentInput((prev) => prev.slice(0, -1));
             return;
         }
@@ -267,10 +271,12 @@ export function useTypingEngine({
                 };
                 errorEventsRef.current.push(err);
                 lastErrorRef.current = err;
+                playKeystroke(' ', 'error', focusMode);
             } else {
                 if (lastErrorRef.current && !lastErrorRef.current.recoveredAt) {
                     lastErrorRef.current.recoveredAt = now;
                 }
+                playKeystroke(' ', 'space', focusMode);
             }
 
             const nextIndex = currentWordIndex + 1;
@@ -301,10 +307,12 @@ export function useTypingEngine({
                 };
                 errorEventsRef.current.push(err);
                 lastErrorRef.current = err;
+                playKeystroke(key, 'error', focusMode);
             } else {
                 if (lastErrorRef.current && !lastErrorRef.current.recoveredAt) {
                     lastErrorRef.current.recoveredAt = now;
                 }
+                playKeystroke(key, 'correct', focusMode);
             }
 
             setCurrentInput((prev) => prev + key);

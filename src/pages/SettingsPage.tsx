@@ -2,12 +2,27 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { exportBackup, importBackup, deleteDatabase, getStorageDiagnostics, type StorageInfo } from '../storage';
+import {
+    loadAudioSettings,
+    saveAudioSettings,
+    playPreview,
+    AUDIO_PACK_META,
+    type AudioSettings,
+    type AudioMode,
+} from '../engine/audio';
 import './SettingsPage.css';
 
 export function SettingsPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [status, setStatus] = useState<{ type: 'success' | 'error' | 'info'; msg: string } | null>(null);
     const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
+    const [audioSettings, setAudioSettings] = useState<AudioSettings>(loadAudioSettings);
+
+    const updateAudio = (patch: Partial<AudioSettings>) => {
+        const next = { ...audioSettings, ...patch };
+        setAudioSettings(next);
+        saveAudioSettings(next);
+    };
 
     useEffect(() => {
         getStorageDiagnostics().then(setStorageInfo);
@@ -148,6 +163,119 @@ export function SettingsPage() {
                 )}
             </div>
 
+            {/* ── Sound Settings ─────────────────────────── */}
+            <div className="settings-section">
+                <h2 className="settings-section-title">Sound</h2>
+                <div className="settings-card">
+
+                    {/* Enable toggle */}
+                    <div className="settings-row">
+                        <div className="settings-info">
+                            <h3 className="settings-label">Typing Sounds</h3>
+                            <p className="settings-desc">
+                                Synthesized keystroke audio. Low-latency, works offline.
+                            </p>
+                        </div>
+                        <button
+                            id="audio-toggle-btn"
+                            className={`settings-btn ${audioSettings.mode !== 'off' ? 'settings-btn--primary' : ''}`}
+                            onClick={() => {
+                                const nextMode: AudioMode = audioSettings.mode === 'off' ? 'mechanical' : 'off';
+                                updateAudio({ mode: nextMode });
+                            }}
+                        >
+                            {audioSettings.mode !== 'off' ? 'On' : 'Off'}
+                        </button>
+                    </div>
+
+                    {audioSettings.mode !== 'off' && (
+                        <>
+                            <div className="settings-separator" />
+
+                            {/* Mode pills */}
+                            <div className="settings-row">
+                                <div className="settings-info">
+                                    <h3 className="settings-label">Sound Pack</h3>
+                                    <p className="settings-desc">Choose the character of each keystroke.</p>
+                                </div>
+                                <div className="settings-pill-group">
+                                    {(Object.keys(AUDIO_PACK_META) as AudioMode[]).map(m => (
+                                        <button
+                                            key={m}
+                                            id={`audio-mode-${m}`}
+                                            className={`settings-pill ${audioSettings.mode === m ? 'settings-pill--active' : ''}`}
+                                            onClick={() => updateAudio({ mode: m })}
+                                            title={AUDIO_PACK_META[m as keyof typeof AUDIO_PACK_META]?.desc}
+                                        >
+                                            {AUDIO_PACK_META[m as keyof typeof AUDIO_PACK_META]?.emoji}{' '}
+                                            {AUDIO_PACK_META[m as keyof typeof AUDIO_PACK_META]?.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="settings-separator" />
+
+                            {/* Volume */}
+                            <div className="settings-row">
+                                <div className="settings-info">
+                                    <h3 className="settings-label">Volume</h3>
+                                    <p className="settings-desc">Master volume for all keystroke sounds.</p>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <input
+                                        id="audio-volume-slider"
+                                        type="range"
+                                        min="0" max="1" step="0.05"
+                                        value={audioSettings.volume}
+                                        onChange={e => updateAudio({ volume: parseFloat(e.target.value) })}
+                                        style={{ width: '100px' }}
+                                    />
+                                    <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)', minWidth: '32px' }}>
+                                        {Math.round(audioSettings.volume * 100)}%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="settings-separator" />
+
+                            {/* Silence in Focus Mode */}
+                            <div className="settings-row">
+                                <div className="settings-info">
+                                    <h3 className="settings-label">Focus Mode Silence</h3>
+                                    <p className="settings-desc">Mute sounds when Focus Mode is active.</p>
+                                </div>
+                                <button
+                                    id="audio-focus-silence-btn"
+                                    className={`settings-btn ${audioSettings.silenceInFocusMode ? 'settings-btn--primary' : ''}`}
+                                    onClick={() => updateAudio({ silenceInFocusMode: !audioSettings.silenceInFocusMode })}
+                                >
+                                    {audioSettings.silenceInFocusMode ? 'Muted' : 'Playing'}
+                                </button>
+                            </div>
+
+                            <div className="settings-separator" />
+
+                            {/* Test button */}
+                            <div className="settings-row">
+                                <div className="settings-info">
+                                    <h3 className="settings-label">Test Sound</h3>
+                                    <p className="settings-desc">Preview the current sound pack now.</p>
+                                </div>
+                                <button
+                                    id="audio-test-btn"
+                                    className="settings-btn"
+                                    onClick={() => playPreview(audioSettings.mode)}
+                                >
+                                    ▶ Play Sample
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+
+            {/* ── Appearance ─────────────────────────────── */}
             <div className="settings-section">
                 <h2 className="settings-section-title">Appearance</h2>
                 <div className="settings-card">

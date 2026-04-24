@@ -8,3 +8,4 @@ export * from './coach';
 export * from './session';
 export * from './textGenerator';
 export * from './skills';
+export * from './audio';
