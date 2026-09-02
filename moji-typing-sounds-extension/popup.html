@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800">
+  <title>Moji Typing Sounds</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ═══ SETTINGS VIEW ═══ -->
+  <div class="popup" id="settings-view">
+    <div class="popup-header">
+      <div class="popup-logo">
+        <div class="popup-logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="2" y="8" width="24" height="16" rx="3" stroke="url(#g1)" stroke-width="1.5" fill="rgba(0,240,255,0.06)"/>
+            <rect x="6" y="12" width="4" height="3" rx="0.8" fill="rgba(0,240,255,0.5)"/>
+            <rect x="12" y="12" width="4" height="3" rx="0.8" fill="rgba(255,0,229,0.5)"/>
+            <rect x="18" y="12" width="4" height="3" rx="0.8" fill="rgba(0,240,255,0.5)"/>
+            <rect x="8" y="17" width="12" height="3" rx="0.8" fill="rgba(0,240,255,0.3)"/>
+            <line x1="14" y1="3" x2="14" y2="8" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="14" cy="3" r="1.5" fill="#00F0FF"/>
+            <defs><linearGradient id="g1" x1="2" y1="8" x2="26" y2="24"><stop stop-color="#00F0FF"/><stop offset="1" stop-color="#FF00E5"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="popup-title-group">
+          <h1 class="popup-title">Moji Typing Sounds</h1>
+          <p class="popup-subtitle">ASMR everywhere you type</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-card">
+      <div class="popup-row">
+        <div class="popup-row-info">
+          <span class="popup-row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/><path d="M19.07 4.93a10 10 0 010 14.14"/></svg></span>
+          <div><h3 class="popup-label">Typing Sounds</h3><p class="popup-desc">Play sounds on every keystroke</p></div>
+        </div>
+        <button id="toggle-btn" class="toggle-btn" aria-label="Toggle sounds"><span class="toggle-track"><span class="toggle-thumb"></span></span></button>
+      </div>
+      <div class="popup-sep"></div>
+      <div class="popup-row popup-row--col" id="pack-section">
+        <div class="popup-row-info" style="width:100%">
+          <span class="popup-row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><rect x="5" y="9" width="3" height="2.5" rx="0.5"/><rect x="10.5" y="9" width="3" height="2.5" rx="0.5"/><rect x="16" y="9" width="3" height="2.5" rx="0.5"/><rect x="7" y="14" width="10" height="2.5" rx="0.5"/></svg></span>
+          <div><h3 class="popup-label">Sound Pack</h3><p class="popup-desc">Choose your typing character</p></div>
+        </div>
+        <div class="pack-grid" id="pack-grid">
+          <button class="pack-pill" data-pack="mechanical"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span class="pack-name">Mechanical</span></button>
+          <button class="pack-pill" data-pack="cute"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5z"/><circle cx="6" cy="17" r="2"/><circle cx="18" cy="15" r="1.5"/><circle cx="13" cy="19" r="1"/></svg><span class="pack-name">Cute</span></button>
+          <button class="pack-pill" data-pack="silent-rhythm"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg><span class="pack-name">Silent</span></button>
+          <button class="pack-pill" data-pack="arcade"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="14" rx="3"/><circle cx="9" cy="14" r="2"/><path d="M15 11v4M13 13h4"/></svg><span class="pack-name">Arcade</span></button>
+          <button class="pack-pill" data-pack="nature"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3c-4 0-8 4-8 9s8 9 8 9 8-4 8-9-4-9-8-9z"/><path d="M12 3v18"/><path d="M5 10c3-1 5-1 7 0s4 1 7 0"/></svg><span class="pack-name">Nature</span></button>
+          <button class="pack-pill" data-pack="coach"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 2 3 4 6 4s6-2 6-4v-5"/></svg><span class="pack-name">Coach</span></button>
+          <button class="pack-pill" data-pack="typewriter"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="10" rx="2"/><path d="M7 10V6a2 2 0 012-2h6a2 2 0 012 2v4"/><circle cx="8" cy="15" r="1" fill="currentColor"/><circle cx="12" cy="15" r="1" fill="currentColor"/><circle cx="16" cy="15" r="1" fill="currentColor"/></svg><span class="pack-name">Typewriter</span></button>
+          <button class="pack-pill" data-pack="thock"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="14" width="16" height="6" rx="2"/><rect x="7" y="10" width="10" height="4" rx="1"/><path d="M10 10V8a2 2 0 114 0v2"/></svg><span class="pack-name">Thock</span></button>
+          <button class="pack-pill" data-pack="bubble"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><circle cx="18" cy="7" r="3"/><circle cx="17" cy="16" r="2"/></svg><span class="pack-name">Bubble</span></button>
+          <button class="pack-pill" data-pack="laser"><svg class="pack-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12h6"/><path d="M22 12l-8-8v5H8v6h6v5l8-8z"/></svg><span class="pack-name">Laser</span></button>
+        </div>
+      </div>
+      <div class="popup-sep" id="vol-sep"></div>
+      <div class="popup-row" id="vol-section">
+        <div class="popup-row-info">
+          <span class="popup-row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
+          <div><h3 class="popup-label">Volume</h3></div>
+        </div>
+        <div class="vol-controls">
+          <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.65">
+          <span class="vol-value" id="volume-display">65%</span>
+        </div>
+      </div>
+      <div class="popup-sep" id="test-sep"></div>
+      <div class="popup-row" id="test-section">
+        <div class="popup-row-info">
+          <span class="popup-row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5,3 19,12 5,21"/></svg></span>
+          <div><h3 class="popup-label">Test Sound</h3><p class="popup-desc">Preview the current pack</p></div>
+        </div>
+        <button id="test-btn" class="test-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 1.5L12 7L3 12.5V1.5Z" fill="currentColor"/></svg> Play</button>
+      </div>
+    </div>
+
+    <!-- Practice Button -->
+    <button id="open-practice" class="practice-open-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><rect x="5" y="9" width="3" height="2.5" rx="0.5"/><rect x="10.5" y="9" width="3" height="2.5" rx="0.5"/><rect x="16" y="9" width="3" height="2.5" rx="0.5"/><rect x="7" y="14" width="10" height="2.5" rx="0.5"/></svg>
+      Practice Typing
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <div class="popup-footer"><span>v1.2.0</span><span class="popup-footer-dot">·</span><span>Powered by <strong>Moji</strong></span></div>
+  </div>
+
+  <!-- ═══ PRACTICE VIEW ═══ -->
+  <div class="popup practice-popup" id="practice-view" style="display:none">
+    <div class="practice-header">
+      <button id="back-to-settings" class="p-back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <h2 class="practice-title">Practice Mode</h2>
+    </div>
+
+    <!-- Mode & Duration Selectors -->
+    <div class="p-controls">
+      <div class="p-control-group">
+        <span class="p-control-label">Mode</span>
+        <div class="p-pills" id="mode-pills">
+          <button class="p-pill active" data-mode="common">Words</button>
+          <button class="p-pill" data-mode="sentences">Sentences</button>
+          <button class="p-pill" data-mode="code">Code</button>
+          <button class="p-pill" data-mode="numbers">Numbers</button>
+          <button class="p-pill" data-mode="symbols">Symbols</button>
+        </div>
+      </div>
+      <div class="p-control-group">
+        <span class="p-control-label">Time</span>
+        <div class="p-pills" id="time-pills">
+          <button class="p-pill active" data-time="30">30s</button>
+          <button class="p-pill" data-time="60">60s</button>
+          <button class="p-pill" data-time="120">2m</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="p-progress-track"><div class="p-progress-bar" id="p-progress"></div></div>
+
+    <!-- Typing Area -->
+    <div id="practice-text-wrap" class="p-text-wrap">
+      <div id="practice-text" class="p-text">
+        <span class="p-placeholder">Click Start to begin typing...</span>
+      </div>
+      <input type="text" id="p-input" class="p-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>
+
+    <!-- Results (hidden until finish) -->
+    <div id="practice-results" class="p-results" style="display:none">
+      <div class="p-result-card">
+        <span class="p-result-value" id="r-wpm">0</span>
+        <span class="p-result-label">WPM</span>
+      </div>
+      <div class="p-result-card">
+        <span class="p-result-value" id="r-acc">0%</span>
+        <span class="p-result-label">Accuracy</span>
+      </div>
+      <div class="p-result-card">
+        <span class="p-result-value" id="r-chars">0/0</span>
+        <span class="p-result-label">Chars</span>
+      </div>
+      <div class="p-result-card">
+        <span class="p-result-value" id="r-consistency">0%</span>
+        <span class="p-result-label">Consistency</span>
+      </div>
+    </div>
+
+    <!-- Live Stats -->
+    <div class="p-stats">
+      <div class="p-stat"><span class="p-stat-value" id="p-wpm">0</span><span class="p-stat-label">WPM</span></div>
+      <div class="p-stat"><span class="p-stat-value" id="p-acc">100%</span><span class="p-stat-label">Accuracy</span></div>
+      <div class="p-stat"><span class="p-stat-value" id="p-time">0:30</span><span class="p-stat-label">Time</span></div>
+    </div>
+
+    <!-- Start Button -->
+    <button id="p-start" class="p-start-btn">Start</button>
+  </div>
+
+  <script src="audio-engine.js"></script>
+  <script src="practice.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

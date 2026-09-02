@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Moji Extension Test</title>
+  <style>
+    body { background: #0a0a1a; color: #fff; font-family: sans-serif; padding: 40px; }
+    h1 { color: #00f0ff; }
+    textarea { width: 100%; height: 200px; font-size: 18px; padding: 16px; background: #111; color: #fff; border: 2px solid #00f0ff; border-radius: 8px; }
+    .log { margin-top: 20px; padding: 16px; background: #111; border-radius: 8px; font-family: monospace; font-size: 13px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; }
+    button { padding: 12px 24px; font-size: 16px; background: #00f0ff; color: #000; border: none; border-radius: 8px; cursor: pointer; margin: 10px 5px 10px 0; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🔊 Moji Audio Engine Test</h1>
+  <p>This page tests the audio engine directly (no extension needed).</p>
+  <p><strong>Step 1:</strong> Click "Test Audio" button below.</p>
+  <p><strong>Step 2:</strong> Type in the text box — you should hear sounds on every key.</p>
+
+  <button id="btn-test">▶ Test Audio (Click Me First)</button>
+  <button id="btn-mechanical">Mechanical</button>
+  <button id="btn-cute">Cute</button>
+  <button id="btn-arcade">Arcade</button>
+  <button id="btn-nature">Nature</button>
+
+  <br><br>
+  <textarea id="typing-area" placeholder="Type here to test sounds..."></textarea>
+  <div class="log" id="log"></div>
+
+  <script>
+    var logEl = document.getElementById('log');
+    function log(msg) {
+      logEl.textContent += new Date().toLocaleTimeString() + ' — ' + msg + '\n';
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // === INLINE AUDIO ENGINE (same as audio-main.js) ===
+    var ctx, master, currentPack = 'mechanical';
+    var PAN = {q:-0.80,w:-0.60,e:-0.40,r:-0.20,t:-0.05,y:0.05,u:0.20,i:0.40,o:0.60,p:0.80,a:-0.75,s:-0.50,d:-0.30,f:-0.10,g:-0.05,h:0.05,j:0.15,k:0.35,l:0.55,z:-0.70,x:-0.50,c:-0.30,v:-0.10,b:-0.05,n:0.05,m:0.25,' ':0};
+    var CMAP = {letter:'correct',space:'space',backspace:'backspace',enter:'space',modifier:'backspace',navigation:'backspace',special:'correct'};
+
+    function initAudio(vol) {
+      try {
+        if (!ctx) { ctx = new AudioContext(); master = ctx.createGain(); master.connect(ctx.destination); log('AudioContext created, state: ' + ctx.state); }
+        if (ctx.state === 'suspended') { ctx.resume(); log('AudioContext resumed'); }
+        master.gain.value = vol;
+        return true;
+      } catch(e) { log('ERROR creating AudioContext: ' + e.message); return false; }
+    }
+
+    function mkNoise(d) {
+      var l=Math.floor(ctx.sampleRate*d),b=ctx.createBuffer(1,l,ctx.sampleRate),a=b.getChannelData(0);
+      for(var i=0;i<l;i++)a[i]=Math.random()*2-1;
+      var s=ctx.createBufferSource();s.buffer=b;return s;
+    }
+    function mkPan(p) { var s=ctx.createStereoPanner();s.pan.value=Math.max(-1,Math.min(1,p));s.connect(master);return s; }
+
+    function mechanical(tp,pan,vol){
+      var now=ctx.currentTime,pr=mkPan(pan),n=mkNoise(0.055),f=ctx.createBiquadFilter();
+      f.type=tp==='error'?'lowpass':'bandpass';f.frequency.value=tp==='error'?700:tp==='space'?1400:tp==='backspace'?1800:2400;f.Q.value=tp==='space'?0.7:1.5;
+      var g=ctx.createGain(),nv=tp==='backspace'?0.10:tp==='space'?0.20:0.16,nd=tp==='space'?0.065:tp==='backspace'?0.030:0.042;
+      g.gain.setValueAtTime(nv*vol,now);g.gain.exponentialRampToValueAtTime(0.0001,now+nd);
+      n.connect(f);f.connect(g);g.connect(pr);n.start(now);n.stop(now+nd+0.02);
+      if(tp!=='backspace'){var o=ctx.createOscillator();o.type='sine';o.frequency.value=(tp==='error'?75:tp==='space'?110:175)*(1+(Math.random()-0.5)*0.14);
+      var og=ctx.createGain();og.gain.setValueAtTime((tp==='error'?0.13:tp==='space'?0.12:0.09)*vol,now);og.gain.exponentialRampToValueAtTime(0.0001,now+(tp==='space'?0.08:0.038));
+      o.connect(og);og.connect(pr);o.start(now);o.stop(now+0.09);}
+    }
+    function cute(tp,pan,vol){
+      var now=ctx.currentTime,pr=mkPan(pan);
+      if(tp==='space'){[600,920].forEach(function(fr,i){var o=ctx.createOscillator();o.type='sine';o.frequency.value=fr;var g=ctx.createGain(),t=now+i*0.028;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.20*vol,t+0.006);g.gain.exponentialRampToValueAtTime(0.0001,t+0.10);o.connect(g);g.connect(pr);o.start(t);o.stop(t+0.12);});}
+      else{var o=ctx.createOscillator();o.type='sine';o.frequency.value=820+Math.random()*380;var g=ctx.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(0.19*vol,now+0.004);g.gain.exponentialRampToValueAtTime(0.0001,now+0.082);o.connect(g);g.connect(pr);o.start(now);o.stop(now+0.10);}
+    }
+    function arcade(tp,pan,vol){
+      var now=ctx.currentTime,pr=mkPan(pan);
+      var o=ctx.createOscillator();o.type='square';o.frequency.value=700+Math.floor(Math.random()*4)*50;
+      var g=ctx.createGain();g.gain.setValueAtTime(0.10*vol,now);g.gain.exponentialRampToValueAtTime(0.0001,now+0.040);
+      o.connect(g);g.connect(pr);o.start(now);o.stop(now+0.045);
+    }
+    function nature(tp,pan,vol){
+      var now=ctx.currentTime,pr=mkPan(pan);
+      var n=mkNoise(0.040),f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.value=350+Math.random()*100;f.Q.value=2.5;
+      var g=ctx.createGain();g.gain.setValueAtTime(0.28*vol,now);g.gain.exponentialRampToValueAtTime(0.0001,now+0.038);
+      n.connect(f);f.connect(g);g.connect(pr);n.start(now);n.stop(now+0.05);
+    }
+
+    var PACKS = {'mechanical':mechanical,'cute':cute,'arcade':arcade,'nature':nature};
+
+    function playSound(key, cat, pack, vol) {
+      if (!initAudio(vol)) return;
+      var pan = PAN[key] || 0;
+      var tp = CMAP[cat] || 'correct';
+      var fn = PACKS[pack];
+      if (fn) { fn(tp, pan, vol); log('Played: pack=' + pack + ' key=' + key + ' cat=' + cat); }
+      else { log('No pack found: ' + pack); }
+    }
+
+    // Button tests
+    document.getElementById('btn-test').onclick = function() { playSound('f','letter','mechanical',0.8); };
+    document.getElementById('btn-mechanical').onclick = function() { currentPack='mechanical'; log('Pack: mechanical'); };
+    document.getElementById('btn-cute').onclick = function() { currentPack='cute'; log('Pack: cute'); };
+    document.getElementById('btn-arcade').onclick = function() { currentPack='arcade'; log('Pack: arcade'); };
+    document.getElementById('btn-nature').onclick = function() { currentPack='nature'; log('Pack: nature'); };
+
+    // Keydown in textarea
+    document.getElementById('typing-area').addEventListener('keydown', function(e) {
+      var key = e.key;
+      if (e.repeat) return;
+      var cat = 'letter';
+      if (key === ' ') cat = 'space';
+      else if (key === 'Backspace') cat = 'backspace';
+      else if (key === 'Enter') cat = 'enter';
+      else if (key.length > 1) return;
+      playSound(key.toLowerCase(), cat, currentPack, 0.8);
+    });
+
+    log('Test page loaded. Click "Test Audio" first, then type in the box.');
+  </script>
+</body>
+</html>
