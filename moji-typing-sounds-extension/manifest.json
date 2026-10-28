@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Moji Typing Sounds",
-  "version": "1.2.0",
-  "description": "ASMR typing sounds on every website. 6 synthesized sound packs. Zero-latency, works offline.",
+  "version": "1.2.1",
+  "description": "ASMR typing sounds on every website. 10 synthesized sound packs. Zero-latency, works offline.",
   "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html",
@@ -30,7 +30,8 @@
   "web_accessible_resources": [
     {
       "resources": ["audio-main.js"],
-      "matches": ["<all_urls>"]
+      "matches": ["<all_urls>"],
+      "use_dynamic_url": true
     }
   ]
 }

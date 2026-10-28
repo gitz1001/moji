@@ -5,7 +5,7 @@
 (function() {
   'use strict';
 
-  var DEFAULTS = { moji_ext_enabled: true, moji_ext_pack: 'mechanical', moji_ext_volume: 0.65 };
+  var DEFAULTS = { moji_ext_enabled: true, moji_ext_pack: 'mechanical', moji_ext_volume: 0.80 };
   var toggleBtn = document.getElementById('toggle-btn');
   var card = document.querySelector('.popup-card');
   var packGrid = document.getElementById('pack-grid');
@@ -17,21 +17,29 @@
   function render() {
     if (settings.moji_ext_enabled) {
       toggleBtn.classList.add('active');
+      toggleBtn.setAttribute('aria-checked', 'true');
       card.classList.remove('disabled');
     } else {
       toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-checked', 'false');
       card.classList.add('disabled');
     }
     var pills = packGrid.querySelectorAll('.pack-pill');
     for (var i = 0; i < pills.length; i++) {
-      if (pills[i].dataset.pack === settings.moji_ext_pack) {
+      var isSelected = pills[i].dataset.pack === settings.moji_ext_pack;
+      if (isSelected) {
         pills[i].classList.add('active');
+        pills[i].setAttribute('aria-checked', 'true');
       } else {
         pills[i].classList.remove('active');
+        pills[i].setAttribute('aria-checked', 'false');
       }
     }
+    var volPercent = Math.round(settings.moji_ext_volume * 100);
     volumeSlider.value = settings.moji_ext_volume;
-    volumeDisplay.textContent = Math.round(settings.moji_ext_volume * 100) + '%';
+    volumeSlider.setAttribute('aria-valuenow', volPercent);
+    volumeSlider.setAttribute('aria-valuetext', volPercent + '%');
+    volumeDisplay.textContent = volPercent + '%';
   }
 
   function save() {
@@ -56,7 +64,10 @@
   // Volume
   volumeSlider.addEventListener('input', function(e) {
     settings.moji_ext_volume = parseFloat(e.target.value);
-    volumeDisplay.textContent = Math.round(settings.moji_ext_volume * 100) + '%';
+    var volPercent = Math.round(settings.moji_ext_volume * 100);
+    volumeSlider.setAttribute('aria-valuenow', volPercent);
+    volumeSlider.setAttribute('aria-valuetext', volPercent + '%');
+    volumeDisplay.textContent = volPercent + '%';
   });
   volumeSlider.addEventListener('change', function() { save(); });
 
@@ -99,7 +110,7 @@
     practiceView.style.display = 'none';
     settingsView.style.display = 'block';
     // Animate width back
-    document.body.style.width = '360px';
+    document.body.style.width = '380px';
   });
 
   // Practice Engine Wiring
@@ -143,8 +154,12 @@
     modePills.addEventListener('click', function(e) {
       if (e.target.tagName !== 'BUTTON') return;
       var pills = modePills.querySelectorAll('button');
-      for (var i=0; i<pills.length; i++) pills[i].classList.remove('active');
+      for (var i=0; i<pills.length; i++) {
+        pills[i].classList.remove('active');
+        pills[i].setAttribute('aria-checked', 'false');
+      }
       e.target.classList.add('active');
+      e.target.setAttribute('aria-checked', 'true');
       window.MojiPractice.setMode(e.target.dataset.mode);
       if (window.MojiPractice.getState().active) window.MojiPractice.finish();
     });
@@ -153,11 +168,63 @@
     timePills.addEventListener('click', function(e) {
       if (e.target.tagName !== 'BUTTON') return;
       var pills = timePills.querySelectorAll('button');
-      for (var i=0; i<pills.length; i++) pills[i].classList.remove('active');
+      for (var i=0; i<pills.length; i++) {
+        pills[i].classList.remove('active');
+        pills[i].setAttribute('aria-checked', 'false');
+      }
       e.target.classList.add('active');
+      e.target.setAttribute('aria-checked', 'true');
       window.MojiPractice.setDuration(parseInt(e.target.dataset.time, 10));
       if (window.MojiPractice.getState().active) window.MojiPractice.finish();
     });
   }
+
+  // ─── Rate Moji Dynamic CWS Reviews Navigation ────────────────
+  var rateBtn = document.getElementById('rate-btn');
+  if (rateBtn) {
+    rateBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var extId = (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) ? chrome.runtime.id : '';
+      var storeUrl = extId 
+        ? 'https://chromewebstore.google.com/detail/' + extId + '/reviews'
+        : 'https://github.com/gitz1001/moji/issues';
+      if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
+        chrome.tabs.create({ url: storeUrl });
+      } else {
+        window.open(storeUrl, '_blank');
+      }
+    });
+  }
+
+  // ─── User Guide Modal Logic ──────────────────────────────────
+  var guideModal = document.getElementById('guide-modal');
+  var guideHeaderBtn = document.getElementById('guide-header-btn');
+  var guideBtn = document.getElementById('guide-btn');
+  var guideCloseBtn = document.getElementById('guide-close-btn');
+  var guideOkBtn = document.getElementById('guide-ok-btn');
+
+  function openGuide() {
+    if (guideModal) guideModal.style.display = 'flex';
+  }
+  function closeGuide() {
+    if (guideModal) guideModal.style.display = 'none';
+  }
+
+  if (guideHeaderBtn) guideHeaderBtn.addEventListener('click', openGuide);
+  if (guideBtn) guideBtn.addEventListener('click', openGuide);
+  if (guideCloseBtn) guideCloseBtn.addEventListener('click', closeGuide);
+  if (guideOkBtn) guideOkBtn.addEventListener('click', closeGuide);
+
+  if (guideModal) {
+    guideModal.addEventListener('click', function(e) {
+      if (e.target === guideModal) closeGuide();
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && guideModal && guideModal.style.display !== 'none') {
+      closeGuide();
+    }
+  });
 
 })();

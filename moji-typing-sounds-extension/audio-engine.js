@@ -1,6 +1,6 @@
 /**
  * Moji Audio Engine — Shared between content script and popup.
- * 6 synthesized sound packs via Web Audio API. No audio files.
+ * 10 synthesized sound packs via Web Audio API. No audio files.
  * Exposes window.MojiAudio global.
  */
 (function() {
@@ -20,23 +20,37 @@
     enter:'space', modifier:'backspace', navigation:'backspace', special:'correct'
   };
 
-  let ctx = null, master = null;
+  let ctx = null, master = null, sharedNoise = null;
 
   function ac(vol) {
     try {
-      if (!ctx) { ctx = new AudioContext(); master = ctx.createGain(); master.connect(ctx.destination); }
+      if (!ctx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        ctx = new AudioCtx();
+        master = ctx.createGain();
+        master.connect(ctx.destination);
+      }
       if (ctx.state === 'suspended') ctx.resume();
       master.gain.value = vol;
       return true;
     } catch { return false; }
   }
 
+  function getNoise() {
+    if (!sharedNoise && ctx) {
+      const len = Math.floor(ctx.sampleRate * 0.5);
+      sharedNoise = ctx.createBuffer(1, len, ctx.sampleRate);
+      const ch = sharedNoise.getChannelData(0);
+      for (let i = 0; i < len; i++) ch[i] = Math.random() * 2 - 1;
+    }
+    return sharedNoise;
+  }
+
   function ns(dur) {
-    var len = Math.floor(ctx.sampleRate * dur);
-    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    var d = buf.getChannelData(0);
-    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-    var src = ctx.createBufferSource(); src.buffer = buf; return src;
+    const src = ctx.createBufferSource();
+    src.buffer = getNoise();
+    src.loop = true;
+    return src;
   }
 
   function pn(pan) {

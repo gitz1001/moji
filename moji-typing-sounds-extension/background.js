@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     chrome.storage.sync.set({
       moji_ext_enabled: true,
       moji_ext_pack: 'mechanical',
-      moji_ext_volume: 0.65
+      moji_ext_volume: 0.80
     });
   }
 });
