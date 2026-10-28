@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moji Typing Sounds — Privacy Policy</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.7; }
+    h1 { color: #111; border-bottom: 2px solid #00f0ff; padding-bottom: 12px; }
+    h2 { color: #222; margin-top: 32px; }
+    p, li { margin-bottom: 12px; }
+    ul { padding-left: 24px; }
+    .badge { display: inline-block; background: #e6fffa; color: #007a5e; font-weight: 600; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; }
+    .date { color: #666; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy — Moji Typing Sounds</h1>
+  <p class="date">Last updated: October 28, 2026 (v1.2.1)</p>
+
+  <h2>Overview</h2>
+  <p>Moji Typing Sounds ("the Extension") is a lightweight Chrome browser extension that generates synthesized typing sounds on keystrokes. Privacy and security are fundamental principles of the Extension.</p>
+
+  <h2>Data We Collect</h2>
+  <p><strong><span class="badge">ZERO DATA COLLECTION</span> We do not collect, log, or transmit any personal data.</strong></p>
+  <p>The Extension does not collect, track, store, or transmit any personally identifiable information, browsing history, website URLs, website content, or typing data.</p>
+  <ul>
+    <li><strong>No Keystroke Logging:</strong> The Extension never records, logs, or stores typed characters. Keystrokes are used exclusively at the instant of input to trigger local procedural Web Audio synthesis.</li>
+    <li><strong>No Keystroke Transmission:</strong> Typed characters are never transmitted to any server, third-party script, or DOM context. The Extension computes audio panning locally and discards key values immediately.</li>
+    <li><strong>Password & Sensitive Field Protection:</strong> The Extension automatically detects password inputs (<code>type="password"</code>), credential fields (<code>autocomplete="current-password"</code>, <code>autocomplete="new-password"</code>), one-time authentication codes, and financial/credit card fields. The Extension completely disables itself on sensitive fields: no keystroke processing occurs and no sounds are played.</li>
+  </ul>
+
+  <h2>Data We Store Locally</h2>
+  <p>The Extension stores only three user preference values using Chrome's native <code>chrome.storage.sync</code> API:</p>
+  <ul>
+    <li><strong>Enabled state</strong> — whether typing sounds are active (boolean)</li>
+    <li><strong>Sound pack</strong> — the name of the selected pack (text string, e.g., "mechanical")</li>
+    <li><strong>Volume level</strong> — the user's preferred volume level (number between 0 and 1)</li>
+  </ul>
+  <p>These preferences are stored in the user's personal Google Chrome sync storage and synchronized across their own Chrome browsers via Google's account sync. The Extension developer has no access to this data.</p>
+
+  <h2>Third-Party Services & Remote Code</h2>
+  <p><strong>The Extension uses zero third-party services, analytics, external CDNs, or remote trackers.</strong></p>
+  <p>All sound synthesis is procedurally generated locally on the user's device using the native Web Audio API. The Extension works 100% offline and loads no external scripts, styles, or fonts.</p>
+
+  <h2>Permissions</h2>
+  <ul>
+    <li><strong>storage</strong> — Used strictly to save and sync user preferences (sound pack, volume, enabled state).</li>
+    <li><strong>Host Access on All URLs (Content Script)</strong> — Required solely to detect keyboard events and trigger real-time sound synthesis on web pages where the user is typing. The content script never reads, alters, stores, or transmits page content or typed text.</li>
+  </ul>
+
+  <h2>Data Sharing</h2>
+  <p>We do not sell, rent, trade, or share any user data with third parties. No data is used for advertising, profiling, or monetization.</p>
+
+  <h2>Contact</h2>
+  <p>If you have questions regarding this privacy policy, please open an issue at our official repository: <a href="https://github.com/gitz1001/moji/issues">https://github.com/gitz1001/moji/issues</a>.</p>
+</body>
+</html>
